@@ -13,13 +13,15 @@ router.post('/login', async (req, res) => {
     let user = null;
     let role = null;
 
-    // Find the user by role
+    
     user = await Citizen.findOne({ where: { email } });
     if (user) role = "citizen";
 
     if (!user) {
       user = await Admin.findOne({ where: { email } });
-      if (user) role = "admin";
+      if (user) {
+        role = user.isSuperAdmin ? "superadmin" : "admin";
+      }
     }
 
     if (!user) {
@@ -27,16 +29,11 @@ router.post('/login', async (req, res) => {
       if (user) role = "municipal";
     }
 
-    // No user found
-
     if (!user) {
       return res.status(401).json({ error: "Invalid Credentials" });
     }
-
-    // Check password
         console.log("passwords:",password, user.password);
         const isMatch = await bcrypt.compare(password, user.password);
-        console.log("Compare Result:", isMatch);
         if (!isMatch) {
         return res.status(401).json({ error: "Invalid email or password" });
         }
@@ -46,7 +43,6 @@ router.post('/login', async (req, res) => {
     // Determine user ID field dynamically
     const userId = user.citizen_id || user.admin_id || user.municipality_id;
 
-    // Generate JWT
     const token = jwt.sign(
       { id: userId, role },
       process.env.JWT_SECRET,

@@ -18,3 +18,14 @@ Content-Type: application/json
   "lastname": "Raolane",
   "locationAddress": "226 west street"
 }
+
+
+### Send Water Outage Notification
+POST http://localhost:3000/api/notifications/send
+Content-Type: application/json
+
+{
+  "room": "RoseGarden",
+  "type": "Water Outage",
+  "message": "Water outage from 2 PM to 6 PM"
+}
