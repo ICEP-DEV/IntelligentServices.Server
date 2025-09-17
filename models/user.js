@@ -1,3 +1,4 @@
+import { UUIDV4 } from 'sequelize';
 import { sequelize, DataTypes } from './config.js';
 import Notification from './notifications.js';
 
@@ -11,7 +12,7 @@ const Citizen = sequelize.define('citizen', {
     email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
+        //unique: true,
     },
     password: {
         type: DataTypes.STRING,
@@ -41,9 +42,9 @@ const Citizen = sequelize.define('citizen', {
 // Admin user
 const Admin = sequelize.define('Admin', {
   admin_id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.UUID,
     primaryKey: true,
-    autoIncrement: true, 
+    defaultValue: UUIDV4, 
   },
   email: {
     type: DataTypes.STRING,
