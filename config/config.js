@@ -1,12 +1,16 @@
-const mysql = require("mysql2");
+import dotenv from 'dotenv';
+import { Sequelize, DataTypes } from 'sequelize';
 
-const pool = mysql.createPool({
-  host: "localhost",
-  port: 3306,
-  user: "root",
-  password: "12345",
-  database: "student_db",
-  multipleStatements: true,
+dotenv.config();
+//ORM
+const sequelize = new Sequelize(
+    process.env.DB_NAME,
+    process.env.DB_USER,
+    process.env.DB_PASS, {
+    host: process.env.DB_HOST,
+    dialect:'mysql',
+    port: process.env.DB_PORT,
+    logging: false
 });
 
-module.exports = pool.promise();
+export { sequelize, DataTypes };
