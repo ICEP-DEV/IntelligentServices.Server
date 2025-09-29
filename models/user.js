@@ -1,19 +1,21 @@
 import { UUIDV4 } from 'sequelize';
 import { sequelize, DataTypes } from './config.js';
 import Notification from './notifications.js';
+import crypto from 'crypto';
 
 // Citizen user
 const Citizen = sequelize.define('citizen', {
     citizen_id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,  // auto-generate UUID
-        primaryKey: true
+         type: DataTypes.STRING(8),
+                defaultValue: () => crypto.randomBytes(4).toString('hex'),
+                primaryKey: true
     },
     email: {
         type: DataTypes.STRING,
         allowNull: false,
         //unique: true,
     },
+    
     password: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -49,7 +51,7 @@ const Admin = sequelize.define('Admin', {
   email: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
+   // unique: true,
   },
   password: {
     type: DataTypes.STRING,
@@ -79,7 +81,7 @@ const MunicipalPersonnel = sequelize.define('municipalPersonnel', {
     email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
+       // unique: true,
     },
     password: {
         type: DataTypes.STRING,

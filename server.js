@@ -12,7 +12,10 @@ import { initSocket } from './middlewares/socket.js';
 import seedSuperAdmin from './utils/Seeder.js';
 import createUser from './routes/SeederAdmin.js';
 import lodgeQuery from './routes/lodgeQuery.js';
-
+import lodgecomplaint from './routes/lodgeComplaint.js';
+import viewtotalrequest from './routes/AdminDashboard.js';
+import totalrequest from './routes/AdminDashboard.js';
+import viewrequestdetails from './routes/AdminDashboard.js';
 
 
 
@@ -42,6 +45,10 @@ app.use('/api', loginRoutes);
 app.use('/api/notifications', notificationsRoute);
 app.use('/super', createUser);
 app.use('/api' , lodgeQuery);
+app.use('/api' , lodgecomplaint)
+app.use('/api' , viewtotalrequest)
+app.use('/api' , totalrequest)
+app.use('/api' , viewrequestdetails)
 
 app.get('/', (req, res) => res.send('API is running'));
 

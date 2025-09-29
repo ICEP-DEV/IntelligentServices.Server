@@ -1,7 +1,8 @@
 import Notification from "./notifications.js";
 import { Citizen, Admin,MunicipalPersonnel} from "./user.js";
 import {Query} from './queries.js'; 
-import { QueryType ,Attachments} from "./queries.js";   
+import { QueryType ,Attachment} from "./queries.js";
+import {UnResolvedQueries} from "./complaints.js"   ;
 
 
 Notification.belongsToMany(Citizen, 
@@ -26,8 +27,20 @@ Admin.hasMany(Query, { foreignKey: 'admin_id' });
 Query.belongsTo(MunicipalPersonnel, { foreignKey: 'municipality_id' });
 MunicipalPersonnel.hasMany(Query, { foreignKey: 'municipality_id' });
 
-Query.hasMany(Attachments, { foreignKey: "query_id" });
-Attachments.belongsTo(Query, { foreignKey: "query_id" });
+Query.hasMany(Attachment, { foreignKey: 'query_id' });
+Attachment.belongsTo(Query, { foreignKey: 'query_id' });
+
+Query.hasMany(UnResolvedQueries, { foreignKey: 'query_id' });
+UnResolvedQueries.belongsTo(Query, { foreignKey: "query_id" });
+
+Citizen.hasMany(UnResolvedQueries, { foreignKey: 'citizen_id' });
+UnResolvedQueries.belongsTo(Citizen, { foreignKey: 'citizen_id' });
+
+Admin.hasMany(UnResolvedQueries, { foreignKey: 'admin_id' });
+UnResolvedQueries.belongsTo(Admin, { foreignKey: 'admin_id' });
+
+MunicipalPersonnel.hasMany(UnResolvedQueries, { foreignKey: 'municipality_id' });
+UnResolvedQueries.belongsTo(MunicipalPersonnel, { foreignKey: 'municipality_id' });
 
 
 export { Citizen, Notification};
