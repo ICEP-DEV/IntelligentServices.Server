@@ -1,4 +1,4 @@
-import { sequelize, DataTypes } from "./config.js";
+import { sequelize, DataTypes } from "../config/dbconfig.js";
 import crypto from 'crypto';
 
 const QueryType = sequelize.define('queryType', {
@@ -23,7 +23,7 @@ const QueryType = sequelize.define('queryType', {
 
 const Query = sequelize.define('query', {
    query_id: {
-         type: DataTypes.STRING(10),
+        type: DataTypes.STRING(10),
         defaultValue: () => crypto.randomBytes(5).toString('hex'),
         primaryKey: true
     },

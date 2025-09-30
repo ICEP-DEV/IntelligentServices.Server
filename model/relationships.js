@@ -2,6 +2,7 @@ import Notification from "./notifications.js";
 import { Citizen, Admin,MunicipalPersonnel} from "./user.js";
 import {Query} from './queries.js'; 
 import { QueryType ,Attachments} from "./queries.js";   
+import Feedback from "./feedback.js";
 
 
 Notification.belongsToMany(Citizen, 
@@ -28,6 +29,9 @@ MunicipalPersonnel.hasMany(Query, { foreignKey: 'municipality_id' });
 
 Query.hasMany(Attachments, { foreignKey: "query_id" });
 Attachments.belongsTo(Query, { foreignKey: "query_id" });
+
+Feedback.belongsTo(Citizen, {foreignKey: 'citizen_id'});
+Citizen.hasMany(Feedback, {foreignKey: 'citizen_id'});
 
 
 export { Citizen, Notification};

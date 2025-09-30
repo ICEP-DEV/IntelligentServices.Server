@@ -3,15 +3,17 @@ import dotenv from 'dotenv';
 import { sequelize } from './models/index.js';
 import registerRoutes from './routes/register.js';
 import dashboardRoutes from './routes/dashboard.js';
-import {router as resetRoutes} from './routes/reset.js';
+import resetRoutes from './routes/reset.js';
 import notificationsRoute from './routes/notifications.js';
 import loginRoutes from './routes/login.js';
 import cors from 'cors';
 import { createServer } from 'http';
-import { initSocket } from './middlewares/socket.js';
+import { initSocket } from './config/socket.js';
 import seedSuperAdmin from './utils/Seeder.js';
-import createUser from './routes/SeederAdmin.js';
+import createUser from './routes/super/SeederAdmin.js';
 import lodgeQuery from './routes/lodgeQuery.js';
+import addAdminUsers from './routes/super/SeederAdmin.js';
+import feedbackRoute from './routes/feedback.js';
 
 
 
@@ -19,8 +21,11 @@ import lodgeQuery from './routes/lodgeQuery.js';
 
 dotenv.config();
 
+
 const app = express();
 const httpServer = createServer(app);
+
+
 
 // -----------------------------
 // CORS setup
@@ -42,6 +47,8 @@ app.use('/api', loginRoutes);
 app.use('/api/notifications', notificationsRoute);
 app.use('/super', createUser);
 app.use('/api' , lodgeQuery);
+app.use('/super' , addAdminUsers);
+app.use('/api', feedbackRoute);
 
 app.get('/', (req, res) => res.send('API is running'));
 

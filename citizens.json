@@ -1,0 +1,26 @@
+[
+  {
+    "citizen_id": "89777095-d179-41f7-8c99-437659f4bbff",
+    "email": "jantjietyronesifiso@gmail.com",
+    "password": "$2b$10$W3DZ0H7xSbPGomkWT1es7erjz0f7IuYGOaaJy6bnp4l37ioUler9C",
+    "locationAddress": "Johannessteg, 1190 Vienna, Austria",
+    "area": null,
+    "firstname": "sifiso",
+    "lastname": "jantjie",
+    "createdAt": "2025-09-18T13:58:12.000Z",
+    "updatedAt": "2025-09-18T13:58:12.000Z",
+    "deletedAt": null
+  },
+  {
+    "citizen_id": "94438031-5b29-4fa4-ad8d-c6b97888633e",
+    "email": "MsMothapo@gmail.com",
+    "password": "$2b$10$uXeIaloGWdDbJHXaBRt.a.KlZUGhS3qlFhtMMEqoXrOOuJZdY9Ou.",
+    "locationAddress": "Mukololo street",
+    "area": null,
+    "firstname": "Vuyelwa",
+    "lastname": "Mothapo",
+    "createdAt": "2025-09-18T12:10:01.000Z",
+    "updatedAt": "2025-09-18T12:10:01.000Z",
+    "deletedAt": null
+  }
+]

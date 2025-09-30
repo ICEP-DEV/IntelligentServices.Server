@@ -42,3 +42,41 @@ Content-Type: application/json
   "streetnumber": "226 west street",
    "streetname": "226 west street",
 }
+
+#### ADD USER
+POST http://localhost:3000/super/add-user
+Content-Type: application/json
+
+  {
+  "email": "dellar@gmail.com",
+  "password": "Franklin@123",
+  "firstname": "Della",
+  "lastname": "Raolane",
+  }
+
+### Citizen posts feedback
+POST http://localhost:3000/api/citizen/feedback
+Content-Type: application/json
+
+{
+  "message": "The issue I got wasnt resolved quick enough and was tidious",
+  "rating": 3,
+  "citizen_id": "89777095-d179-41f7-8c99-437659f4bbff"
+}
+
+###
+
+### Citizen posts feedback without message (should fail with 400)
+POST http://localhost:3000/api/citizen/feedback
+Content-Type: application/json
+
+{
+  "citizen_id": "94438031-5b29-4fa4-ad8d-c6b97888633e",
+  "rating": 4
+}
+
+###
+
+### Admin gets all feedback with citizen info
+GET http://localhost:3000/api/admin/feedback
+Accept: application/json

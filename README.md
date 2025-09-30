@@ -56,3 +56,15 @@ student-management-backend/
 - **JWT** - Authentication tokens
 - **bcryptjs** - Password hashing
 
+### RUN MIGRATION SCRIPT #########
+
+npm install           # install deps #
+
+node exportSeedData.js # create seeds #
+
+###### USER SCRIPT SEED:MIGRATE ###########
+
+npx sequelize-cli db:migrate # migrate #
+
+npx sequelize-cli db:seed:all # run the seeders # # populate the database #
+

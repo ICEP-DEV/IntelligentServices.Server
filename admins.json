@@ -1,0 +1,22 @@
+[
+  {
+    "admin_id": "0ad05783-be5d-469d-a86f-0a370fa27e97",
+    "email": "franklinsctt@outlook.com",
+    "password": "$2b$10$HjfSnHOQY6jSrogdfvNS1u4UWwEifdz0gM7IYSYZWq5qDnr5nw1fy",
+    "isSuperAdmin": 0,
+    "firstname": "Frank",
+    "lastname": "Scott",
+    "createdAt": "2025-09-18T10:02:42.000Z",
+    "updatedAt": "2025-09-18T10:02:42.000Z"
+  },
+  {
+    "admin_id": "86171811-118b-4f88-814e-2f010d400e33",
+    "email": "dellabrentraolane@gmail.com",
+    "password": "$2b$10$PaLZmtwZivxyy1jbyEgRpO14kr1.vKm7ovNjm5/3zOUXKpcv4gfiC",
+    "isSuperAdmin": 0,
+    "firstname": "Raolane",
+    "lastname": "Della",
+    "createdAt": "2025-09-18T09:49:33.000Z",
+    "updatedAt": "2025-09-18T09:49:33.000Z"
+  }
+]

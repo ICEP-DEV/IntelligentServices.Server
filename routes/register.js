@@ -2,6 +2,7 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { Citizen, Admin, MunicipalPersonnel } from '../models/user.js';
+import { isEmailTaken } from '../utils/FindEmail.js';
 
 const router = express.Router();
 
@@ -16,6 +17,12 @@ function validatePassword(password) {
 
 router.post('/register/citizen', async (req, res) => {
   const { email, password, firstname, lastname, locationAddress } = req.body;
+
+   // Check if email exists in any table
+    const exists = await isEmailTaken(email);
+      if (exists) {
+        return res.status(400).json({ error: "Email already exists" });
+      }
 
   if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
   if (!validatePassword(password)) return res.status(400).json({ error: 'Password at least 6 characters, include 1 uppercase, 1 digit, 1 symbol' });

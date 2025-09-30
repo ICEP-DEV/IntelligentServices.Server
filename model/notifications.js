@@ -1,4 +1,4 @@
-import { sequelize, DataTypes } from "./config.js";
+import { sequelize, DataTypes } from "../config/dbconfig.js";
 import { Citizen } from "./user.js";
 
 //Notification table

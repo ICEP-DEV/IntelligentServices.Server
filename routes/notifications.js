@@ -1,5 +1,5 @@
 import express from "express";
-import  { getSocket } from "../middlewares/socket.js";
+import  { getSocket } from "../config/socket.js";
 
 const router = express.Router();
 

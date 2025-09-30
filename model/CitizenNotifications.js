@@ -1,4 +1,4 @@
-import { sequelize, DataTypes } from './config.js';
+import { sequelize, DataTypes } from '../config/config.js';
 
 const CitizenNotifications = sequelize.define('CitizenNotifications', {
   read: {

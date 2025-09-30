@@ -2,6 +2,7 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { Citizen, Admin, MunicipalPersonnel } from '../models/user.js';
+import { isEmailTaken } from '../utils/FindEmail.js';
 
 const router = express.Router();
 
@@ -14,6 +15,7 @@ router.post('/login', async (req, res) => {
     let role = null;
 
     
+
     user = await Citizen.findOne({ where: { email } });
     if (user) role = "citizen";
 
@@ -32,7 +34,6 @@ router.post('/login', async (req, res) => {
     if (!user) {
       return res.status(401).json({ error: "Invalid Credentials" });
     }
-        console.log("passwords:",password, user.password);
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
         return res.status(401).json({ error: "Invalid email or password" });
