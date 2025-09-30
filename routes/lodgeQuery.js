@@ -27,10 +27,14 @@ try{
        return res.status(400).json({ error: " All the fields must be  must be provided" });
     }
 
-     if (!req.file) {
-    return res.status(400).json({ error: "Photo must be uploaded" });
-    }
+    //  if (!req.file) {
+    // return res.status(400).json({ error: "Photo must be uploaded" });
+    // }
+    let photo_url = null;
+    if (req.file) {
         const photo_url = req.file.path;
+      }
+        
 
     const [queryTypeRecord] = await QueryType.findOrCreate({
       where: { query_type, query_subtype },
@@ -42,7 +46,10 @@ try{
 
     const query_id = newQuery.query_id;
 
-    const imageUpload = await Attachment.create({photo_url,query_id})
+    if (req.file){
+        const imageUpload = await Attachment.create({photo_url,query_id})
+    }
+  
 
     return res.status(200).json({message: "The Query has been lodged", query_id })
     

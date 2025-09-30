@@ -29,7 +29,7 @@ const httpServer = createServer(app);
 // CORS setup
 // -----------------------------
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: "http://localhost:5174",
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 };
 app.use(cors(corsOptions));
@@ -38,6 +38,7 @@ app.use(express.json());
 // -----------------------------
 // Routes
 // -----------------------------
+
 app.use('/api', registerRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api', resetRoutes);
@@ -55,6 +56,7 @@ app.get('/', (req, res) => res.send('API is running'));
 // -----------------------------
 // Database + Server + Socket.IO
 // -----------------------------
+
 sequelize.sync({ alter: true })
   .then(async () => {
     console.log('Database connected');

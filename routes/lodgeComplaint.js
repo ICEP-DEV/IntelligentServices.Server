@@ -10,7 +10,7 @@ const{query_type,query_service,description,query_id}=req.body
 
 try {
     
-    if(!query_type ||!query_service ||!description){
+    if(!query_type ||!description){
         return res.status(400).json({ error: " All the fields must be  must be provided" });
     }
 

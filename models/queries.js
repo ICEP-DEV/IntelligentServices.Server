@@ -73,10 +73,12 @@ const Attachment = sequelize.define('attachment', {
         autoIncrement: true,
         primaryKey: true
     },
+     
     photo_url: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true,
     },
+    
     query_id: {
         type: DataTypes.STRING(10),
         allowNull: false,
