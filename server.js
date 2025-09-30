@@ -29,7 +29,7 @@ const httpServer = createServer(app);
 // CORS setup
 // -----------------------------
 const corsOptions = {
-  origin: "http://localhost:5174",
+  origin: "http://localhost:5173",
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 };
 app.use(cors(corsOptions));
@@ -69,3 +69,5 @@ sequelize.sync({ alter: true })
     });
   })
   .catch(err => console.error('DB connection error:', err));
+
+  console.log("JWT_SECRET loaded:", process.env.JWT_SECRET);
