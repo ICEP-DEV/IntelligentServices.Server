@@ -1,4 +1,4 @@
-import { sequelize, DataTypes } from "./config.js";
+import { sequelize, DataTypes } from "../config/dbconfig.js";
 import crypto from 'crypto';
 import { Citizen } from './user.js';
 

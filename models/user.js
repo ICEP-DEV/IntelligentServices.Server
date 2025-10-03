@@ -1,5 +1,5 @@
 import { UUIDV4 } from 'sequelize';
-import { sequelize, DataTypes } from './config.js';
+import { sequelize, DataTypes } from '../config/dbconfig.js';
 import Notification from './notifications.js';
 import crypto from 'crypto';
 
@@ -13,7 +13,6 @@ const Citizen = sequelize.define('citizen', {
     email: {
         type: DataTypes.STRING,
         allowNull: false,
-        //unique: true,
     },
     
     password: {
@@ -35,6 +34,10 @@ const Citizen = sequelize.define('citizen', {
     lastname: {
         type: DataTypes.STRING,
         allowNull: true,
+    },
+    isSuspended: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
     }
 }, {
     timestamps: true,
@@ -51,7 +54,6 @@ const Admin = sequelize.define('Admin', {
   email: {
     type: DataTypes.STRING,
     allowNull: false,
-   // unique: true,
   },
   password: {
     type: DataTypes.STRING,
@@ -69,6 +71,10 @@ const Admin = sequelize.define('Admin', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  isSuspended: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+    }
 });
 
 // Municipal personnel user
@@ -81,7 +87,7 @@ const MunicipalPersonnel = sequelize.define('municipalPersonnel', {
     email: {
         type: DataTypes.STRING,
         allowNull: false,
-       // unique: true,
+
     },
     password: {
         type: DataTypes.STRING,
@@ -95,9 +101,13 @@ const MunicipalPersonnel = sequelize.define('municipalPersonnel', {
         type: DataTypes.STRING,
         allowNull: true,
     },
-    role: {
-        type: DataTypes.STRING,
-        allowNull: false,
+    // role: {
+    //     type: DataTypes.STRING,
+    //     allowNull: false,
+    // },
+    isSuspended: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
     }
 }, {
     timestamps: true,

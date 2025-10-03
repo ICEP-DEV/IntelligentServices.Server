@@ -101,4 +101,4 @@ router.post('/reset-password', async (req, res) => {
   }
 });
 
-export { router, sendEmail };
+export default router

@@ -1,6 +1,6 @@
 import express from 'express'
 import {Query, QueryType,Attachment} from '../models/queries.js'
-import { sequelize } from '../models/config.js';
+import { sequelize } from '../config/dbconfig.js';
 import {Citizen} from '../models/user.js'
 
 
