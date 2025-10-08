@@ -1,4 +1,4 @@
-import { Citizen,Admin,MunicipalPersonnel } from "../models/user.js";
+import { Citizen,Admin,MunicipalPersonnel } from "../model/user.js";
 
 export async function isEmailTaken(email) {
 

@@ -1,9 +1,9 @@
 
 import express  from  'express'
 import crypto from 'crypto'
-import { Query,QueryType,Attachment } from "../models/queries.js";
+import { Query,QueryType,Attachment } from "../model/queries.js";
 import multer from "multer" ;
-import { Citizen} from '../models/user.js';
+import { Citizen} from '../model/user.js';
 import {authenticateToken} from "../middlewares/authenticateToken.js";
 
 const router = express.Router()

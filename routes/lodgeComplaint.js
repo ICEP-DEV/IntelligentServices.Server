@@ -1,7 +1,7 @@
 import express  from  'express'
-import { UnResolvedQueries} from '../models/complaints.js';
+import { UnResolvedQueries} from '../model/complaints.js';
 import {authenticateToken} from "../middlewares/authenticateToken.js";
-import {Query} from '../models/queries.js'
+import {Query} from '../model/queries.js'
 const router = express.Router();
 
 router.post("/lodgecomplaint" ,authenticateToken, async(req,res)  =>{

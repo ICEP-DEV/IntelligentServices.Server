@@ -1,5 +1,5 @@
 import express from "express";
-import { Admin, MunicipalPersonnel, Citizen } from "../../models/user.js";
+import { Admin, MunicipalPersonnel, Citizen } from "../../model/user.js";
 import sendEmail from "../../utils/email.js";
 
 const router = express.Router();

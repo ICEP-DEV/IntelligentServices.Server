@@ -1,6 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import { sequelize } from './models/index.js';
+import { sequelize } from './model/index.js';
 import registerRoutes from './routes/register.js';
 import dashboardRoutes from './routes/dashboard.js';
 import resetRoutes from './routes/reset.js';
@@ -10,16 +10,6 @@ import cors from 'cors';
 import { createServer } from 'http';
 import { initSocket } from './config/socket.js';
 import seedSuperAdmin from './utils/Seeder.js';
-<<<<<<< HEAD
-import createUser from './routes/super/SeederAdmin.js';
-import lodgeQuery from './routes/lodgeQuery.js';
-import addAdminUsers from './routes/super/SeederAdmin.js';
-import feedbackRoute from './routes/feedback.js';
-
-
-
-
-=======
 
 
 // Super admin routes
@@ -35,7 +25,6 @@ import viewTotalRequest from './routes/AdminDashboard.js';
 import totalRequest from './routes/AdminDashboard.js';
 import viewRequestDetails from './routes/AdminDashboard.js';
 import StatsInfo from './routes/StatisticsInfo.js'
->>>>>>> 17066b06370505c265ca2f97ce4508530c051f67
 
 dotenv.config();
 
@@ -63,12 +52,6 @@ app.use('/api/dashboard', dashboardRoutes);
 app.use('/api', resetRoutes);
 app.use('/api', loginRoutes);
 app.use('/api/notifications', notificationsRoute);
-<<<<<<< HEAD
-app.use('/super', createUser);
-app.use('/api' , lodgeQuery);
-app.use('/super' , addAdminUsers);
-app.use('/api', feedbackRoute);
-=======
 app.use('/api', lodgeQuery);
 app.use('/api', lodgeComplaint);
 app.use('/api', feedbackRoute);
@@ -85,7 +68,6 @@ app.use('/super', createUser);
 app.use('/super', addAdminUsers);  
 app.use('/super', suspendedUser);
 
->>>>>>> 17066b06370505c265ca2f97ce4508530c051f67
 
 app.get('/', (req, res) => res.send('API is running'));
 

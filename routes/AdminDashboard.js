@@ -1,7 +1,7 @@
 import express from 'express'
-import {Query, QueryType,Attachment} from '../models/queries.js'
+import {Query, QueryType,Attachment} from '../model/queries.js'
 import { sequelize } from '../config/dbconfig.js';
-import {Citizen} from '../models/user.js'
+import {Citizen} from '../model/user.js'
 
 
 const router = express.Router();

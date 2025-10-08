@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { Admin } from '../models/user.js';
+import { Admin } from '../model/user.js';
 
 export default async function seedSuperAdmin() {
   try {

@@ -1,6 +1,6 @@
 // routes/superAdmin.js
 import express from "express";
-import { Admin, MunicipalPersonnel } from "../../models/user.js";
+import { Admin, MunicipalPersonnel } from "../../model/user.js";
 import {authenticateToken} from "../../middlewares/authenticateToken.js";
 import { authorizeRole } from "../../middlewares/authorizeRole.js";
 import jwt from "jsonwebtoken";

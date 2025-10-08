@@ -1,7 +1,7 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { Citizen, Admin, MunicipalPersonnel } from '../models/user.js';
+import { Citizen, Admin, MunicipalPersonnel } from '../model/user.js';
 import { validatePassword } from './register.js';
 import sendEmail from '../utils/email.js';
 

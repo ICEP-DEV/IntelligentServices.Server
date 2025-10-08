@@ -1,4 +1,4 @@
-import { sequelize, DataTypes } from "../config/config.js";
+import { sequelize, DataTypes } from "../config/dbconfig.js";
 
 const Feedback = sequelize.define('feedback', {
    feedback_id: {

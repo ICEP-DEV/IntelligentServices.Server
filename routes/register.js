@@ -1,7 +1,7 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { Citizen, Admin, MunicipalPersonnel } from '../models/user.js';
+import { Citizen, Admin, MunicipalPersonnel } from '../model/user.js';
 import { isEmailTaken } from '../utils/FindEmail.js';
 
 const router = express.Router();

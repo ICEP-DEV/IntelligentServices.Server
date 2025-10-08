@@ -1,6 +1,6 @@
 import express from "express";
-import { Query, QueryType} from "../models/queries.js";
-import  { UnResolvedQueries } from '../models/complaints.js';
+import { Query, QueryType} from "../model/queries.js";
+import  { UnResolvedQueries } from '../model/complaints.js';
 const router = express.Router();
 
 // GET /api/dashboard
