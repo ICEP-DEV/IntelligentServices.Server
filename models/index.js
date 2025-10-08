@@ -1,7 +1,17 @@
+<<<<<<< HEAD
 import fs from 'fs';
 import path from 'path';
 import process from 'process';
 import { Sequelize } from 'sequelize';
+=======
+import { sequelize, DataTypes } from '../config/dbconfig.js';
+import './notifications.js';
+import './user.js';
+import './queries.js';
+import './relationships.js';
+import './complaints.js';
+
+>>>>>>> 17066b06370505c265ca2f97ce4508530c051f67
 
 const __filename = new URL(import.meta.url).pathname;
 const __dirname = path.dirname(__filename);
