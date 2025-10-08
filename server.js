@@ -25,6 +25,7 @@ import viewTotalRequest from './routes/AdminDashboard.js';
 import totalRequest from './routes/AdminDashboard.js';
 import viewRequestDetails from './routes/AdminDashboard.js';
 import StatsInfo from './routes/StatisticsInfo.js'
+import OtpRoute from './routes/otpRoute.js';
 
 dotenv.config();
 
@@ -59,6 +60,7 @@ app.use('/api', viewTotalRequest);
 app.use('/api', totalRequest);
 app.use('/api', viewRequestDetails);
 app.use('/api', StatsInfo)
+app.use('/api', OtpRoute);
 
 
 //---------------------

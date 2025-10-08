@@ -43,7 +43,7 @@ const Query = sequelize.define('query', {
         allowNull: false,
    
     },
- querytype_id: {
+    querytype_id: {
         type: DataTypes.STRING(10),
         allowNull: false,
         references: {
@@ -51,13 +51,16 @@ const Query = sequelize.define('query', {
             key: 'querytype_id'
         }
     },
- citizen_id: {
+    citizen_id: {
         type: DataTypes.STRING(8),
         allowNull: false,
         references: {
             model: Citizen,
             key: 'citizen_id'
         }
+    },
+    set_priotity_score: {
+        type: DataTypes.INTEGER,
     }
   
 },
