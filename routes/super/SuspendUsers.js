@@ -26,12 +26,11 @@ router.patch("/users/:id/suspend", async (req, res) => {
     user.isSuspended = !user.isSuspended;
     await user.save();
 
-    // Send email if the user is suspended
     if (user.isSuspended) {
       await sendEmail(
         "Account Suspended",
         user.email,
-        null, // token not needed for suspension
+        null,
         user.name || user.username || "User",
         `Your account has been suspended. Please contact support if you believe this is an error.`
       );

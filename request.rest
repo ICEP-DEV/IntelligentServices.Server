@@ -80,3 +80,7 @@ Content-Type: application/json
 ### Admin gets all feedback with citizen info
 GET http://localhost:3000/api/admin/feedback
 Accept: application/json
+
+#### suspend user
+
+PATCH http://localhost:3000/super/users/501b7353/suspend

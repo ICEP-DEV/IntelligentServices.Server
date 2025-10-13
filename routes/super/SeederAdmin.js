@@ -1,6 +1,6 @@
 // routes/superAdmin.js
 import express from "express";
-import { Admin, MunicipalPersonnel } from "../../model/user.js";
+import { Admin, MunicipalPersonnel, Citizen } from "../../model/user.js";
 import {authenticateToken} from "../../middlewares/authenticateToken.js";
 import { authorizeRole } from "../../middlewares/authorizeRole.js";
 import jwt from "jsonwebtoken";
@@ -78,33 +78,38 @@ router.post(
   }
 );
 
-router.get("/users",
-    authenticateToken,
-    authorizeRole(["superadmin"]),
-    
-    async (req,res) => {
-      try{
-        const admins = await Admin.findAll({
-          where: {isSuperAdmin: false},
-          attributes: ["admin_id","firstname","lastname","email"],
-        });
-        const municipals = await MunicipalPersonnel.findAll({
-          attributes: ["municipality_id","firstname","lastname","email"],
-        });
+router.get(
+  "/users",
+  authenticateToken,
+  authorizeRole(["superadmin"]),
+  async (req, res) => {
+    try {
+      const admins = await Admin.findAll({
+        where: { isSuperAdmin: false },
+        attributes: ["admin_id", "firstname", "lastname", "email"],
+      });
 
-        const users = [
-          ...admins.map(u => ({...u.dataValues, role: "admin"})),
-          ...municipals.map(u => ({...u.dataValues,role: "municipals"})),
-        ];
+      const municipals = await MunicipalPersonnel.findAll({
+        attributes: ["municipality_id", "firstname", "lastname", "email"],
+      });
 
-        
+      const citizens = await Citizen.findAll({
+        attributes: ["citizen_id", "firstname", "lastname", "email"],
+      });
 
-        res.status(200).json({users});
-      } catch (err) {
-        console.error("FAILED GET super/USERS",err);
-        res.status(500).json({ error: "failed to fetch users"})
-      }
+      const users = [
+        ...admins.map(u => ({ id: u.admin_id, firstname: u.firstname, lastname: u.lastname, email: u.email, isSuspended: u.isSuspended, role: "admin" })),
+        ...municipals.map(u => ({ id: u.municipality_id, firstname: u.firstname, lastname: u.lastname, email: u.email, isSuspended: u.isSuspended, role: "municipal" })),
+        ...citizens.map(u => ({ id: u.citizen_id, firstname: u.firstname, lastname: u.lastname, email: u.email, isSuspended: u.isSuspended, isVerified: u.is_Verified, role: "citizen" })),
+      ];
+
+
+      res.status(200).json({ users });
+    } catch (err) {
+      console.error("FAILED GET /super/users", err);
+      res.status(500).json({ error: "Failed to fetch users" });
     }
-)
+  }
+);
 
 export default router;
