@@ -19,13 +19,8 @@ router.post(
   async (req, res) => {
     try {
       const { name, email, role } = req.body;
+      
       if (!name || !email || !role) return res.status(400).json({ error: "Missing fields" });
-
-      let superexists = null;
-      if (role === "admin") superexists = await Admin.findOne({ where: { email } });
-      else if (role === "municipal") superexists = await MunicipalPersonnel.findOne({ where: { email } });
-      if (superexists) return res.status(400).json({ error: "User already exists" });
-
       const exists = await isEmailTaken(email);
       if (exists) {
         return res.status(400).json({ error: "Email already exists" });

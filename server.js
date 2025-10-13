@@ -40,7 +40,7 @@ const httpServer = createServer(app);
 // -----------------------------
 const corsOptions = {
   origin: "http://localhost:5173",
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS","PATCH"],
 };
 app.use(cors(corsOptions));
 app.use(express.json());

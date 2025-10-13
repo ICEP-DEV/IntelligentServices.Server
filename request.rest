@@ -12,7 +12,7 @@ POST http://localhost:3000/api/register/citizen
 Content-Type: application/json
 
 {
-  "email": "dellar@gmail.com",
+  "email": "dellabrentraolane@gmail.com",
   "password": "Franklin@123",
   "firstname": "Della",
   "lastname": "Raolane",
@@ -29,7 +29,7 @@ Content-Type: application/json
   "type": "Water Outage",
   "message": "Water outage from 2 PM to 6 PM"
 }
-
+####
 POST http://localhost:3000/api/lodgequery
 Content-Type: application/json
 
@@ -80,3 +80,4 @@ Content-Type: application/json
 ### Admin gets all feedback with citizen info
 GET http://localhost:3000/api/admin/feedback
 Accept: application/json
+
