@@ -3,6 +3,7 @@ import { Citizen, Admin,MunicipalPersonnel} from "./user.js";
 import {Query} from './queries.js'; 
 import { QueryType ,Attachment} from "./queries.js";
 import {UnResolvedQueries} from "./complaints.js"   ;
+import Feedback from "./feedback.js";
 
 
 Notification.belongsToMany(Citizen, 
@@ -41,6 +42,13 @@ UnResolvedQueries.belongsTo(Admin, { foreignKey: 'admin_id' });
 
 MunicipalPersonnel.hasMany(UnResolvedQueries, { foreignKey: 'municipality_id' });
 UnResolvedQueries.belongsTo(MunicipalPersonnel, { foreignKey: 'municipality_id' });
+
+Citizen.hasMany(Feedback, { foreignKey: "citizen_id" });
+Feedback.belongsTo(Citizen, { foreignKey: "citizen_id" });
+
+Admin.hasMany(Feedback, { foreignKey: "admin_id" });
+Feedback.belongsTo(Admin, { foreignKey: "admin_id" });
+
 
 
 export { Citizen, Notification};

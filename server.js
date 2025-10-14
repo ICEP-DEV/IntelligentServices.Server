@@ -26,6 +26,7 @@ import totalRequest from './routes/AdminDashboard.js';
 import viewRequestDetails from './routes/AdminDashboard.js';
 import StatsInfo from './routes/StatisticsInfo.js'
 import OtpRoute from './routes/otpRoute.js';
+import similarReports from './routes/SimilarReports.js';
 
 dotenv.config();
 
@@ -40,7 +41,7 @@ const httpServer = createServer(app);
 // -----------------------------
 const corsOptions = {
   origin: "http://localhost:5173",
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS","PATCH"],
+  methods: ["GET", "POST", "PUT","PATCH", "DELETE", "OPTIONS"],
 };
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -61,6 +62,7 @@ app.use('/api', totalRequest);
 app.use('/api', viewRequestDetails);
 app.use('/api', StatsInfo)
 app.use('/api', OtpRoute);
+app.use('/api', similarReports)
 
 
 //---------------------
@@ -89,4 +91,4 @@ sequelize.sync()
   })
   .catch(err => console.error('DB connection error:', err));
 
-console.log("JWT_SECRET loaded:", process.env.JWT_SECRET);
+

@@ -81,3 +81,6 @@ Content-Type: application/json
 GET http://localhost:3000/api/admin/feedback
 Accept: application/json
 
+#### suspend user
+
+PATCH http://localhost:3000/super/users/58100f3a-9aac-4fee-8b4e-2ef80e14ca33/suspend

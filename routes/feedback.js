@@ -16,16 +16,28 @@ router.post("/citizen/feedback", async (req, res) => {
     if (!rating || rating < 1 || rating > 5) {
       return res.status(400).json({ error: "Rating must be between 1 and 5" });
     }
+    const citizen = await Citizen.findOne({
+    where: { citizen_id },
+    attributes: ["firstname", "lastname"],
+    });
+
+
+    if (!citizen) {
+      return res.status(404).json({ error: "Citizen not found" });
+    }
 
     const feedback = await Feedback.create({
       message,
       rating,
-      citizen_id,
     });
 
-    // Optional real-time socket event
     const io = getSocket();
-    io.emit("newFeedback", feedback);
+    io.to("admin-role").emit("newFeedback",  {
+      citizen_id,
+      name: `${citizen.firstname} ${citizen.lastname}`,
+      message,
+      rating,
+    });
 
     res.status(201).json({
       success: true,

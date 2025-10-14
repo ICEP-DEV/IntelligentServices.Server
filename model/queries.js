@@ -61,6 +61,12 @@ const Query = sequelize.define('query', {
     },
     set_priotity_score: {
         type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue:0,
+        validate: {
+            min: 0,
+            max:100
+        }
     }
   
 },
