@@ -22,7 +22,9 @@ const upload = multer({ storage });
 router.post('/lodgequery',authenticateToken, upload.single('photo'), async (req, res) => {
 try{
     const{query_type,query_subtype,name,email,contact,query_address,region,query_description}=req.body
-
+  
+    
+     if(hasNumber(name)) return res.status(406).json({ error: ' Invalid input !, Dont play with me !!!'})
    if(!query_type || !query_subtype ||!query_address || !query_description ){
        return res.status(400).json({ error: " All the fields must be  must be provided" });
     }

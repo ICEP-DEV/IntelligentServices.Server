@@ -14,6 +14,8 @@ function validatePassword(password) {
   return lengthCheck && uppercaseCheck && digitCheck && symbolCheck;
 }
 
+const hasNumber = (str) => /\d/.test(str);
+
 router.post('/register/citizen', async (req, res) => {
   const { email, password, firstname, lastname, locationAddress } = req.body;
 
@@ -22,6 +24,7 @@ router.post('/register/citizen', async (req, res) => {
   if (exists) return res.status(400).json({ error: "Email already exists" });
 
   if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
+  if(hasNumber(firstname) || hasNumber(lastname)) return res.status(406).json({ error: ' Invalid input ! , A name can not be a number  !!!'})
   if (!validatePassword(password)) return res.status(400).json({ error: 'Password at least 6 characters, include 1 uppercase, 1 digit, 1 symbol' });
 
   try {
