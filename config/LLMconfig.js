@@ -1,61 +1,42 @@
 import axios from "axios";
-import cosineSimilarity from "cosine-similarity";
+import dotenv from "dotenv";
 
-const HUGGINGFACE_API_KEY = process.env.HUGGINGFACE_API_KEY;
+dotenv.config();
+const HF_TOKEN = process.env.HUGGINGFACE_API_KEY; // or HF_TOKEN if that’s what you named it
 
+export async function findSimilarReports(newText, reports) {
+  try {
+    // Extract all report messages
+    const sentences = reports.map((r) => r.message);
 
-async function getEmbedding(text) {
-  const res = await axios.post(
-    "https://api-inference.huggingface.co/models/sentence-transformers/all-MiniLM-L6-v2",
-    { inputs: text },
-    {
-      headers: {
-        Authorization: `Bearer ${HUGGINGFACE_API_KEY}`,
-        "Content-Type": "application/json",
+    // Call Hugging Face's sentence similarity pipeline
+    const res = await axios.post(
+      "https://router.huggingface.co/hf-inference/models/sentence-transformers/all-MiniLM-L6-v2/pipeline/sentence-similarity",
+      {
+        inputs: {
+          source_sentence: newText,
+          sentences,
+        },
       },
-    }
-  );
-  const data = Array.isArray(res.data) ? res.data : res.data[0];
-  return Array.isArray(data) ? data[0] : data;
+      {
+        headers: {
+          Authorization: `Bearer ${HF_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const scores = res.data; // returns an array of similarity scores (0–1)
+
+    // Combine the text + score into one array and filter strong matches
+    const results = sentences
+      .map((text, i) => ({ message: text, score: scores[i] }))
+      .filter((r) => r.score > 0.6)
+      .sort((a, b) => b.score - a.score);
+
+    return results;
+  } catch (err) {
+    console.error("Similarity comparison failed:", err.response?.data || err.message);
+    return [];
+  }
 }
-
-async function findSimilarReports(newText, reports) {
-  
-  const allTexts = [newText, ...reports.map(r => r.message)];
-  const res = await axios.post(
-    "https://api-inference.huggingface.co/models/sentence-transformers/all-MiniLM-L6-v2",
-    { inputs: allTexts },
-    {
-      headers: {
-        Authorization: `Bearer ${HUGGINGFACE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-    }
-  );
-
-  const embeddings = res.data;
-  const newEmb = embeddings[0];
-  const reportEmbs = embeddings.slice(1);
-
-  const scores = reports.map((r, i) => ({
-    message: r.message,
-    score: cosineSimilarity(newEmb, reportEmbs[i]),
-  }));
-
-  return scores
-    .filter(s => s.score > 0.6) 
-    .sort((a, b) => b.score - a.score);
-}
-
-const reports = [
-  { message: "Power outage affecting the whole of Pretoria North" },
-  { message: "No water in Sunnyside area" },
-  { message: "Entire Pretoria North without electricity" },
-  { message: "Community blackout in Pretoria North" },
-];
-
-findSimilarReports("The whole of Pretoria North has no power right now", reports)
-  .then(similar => console.log(similar))
-  .catch(console.error);
-
-export {findSimilarReports, getEmbedding};

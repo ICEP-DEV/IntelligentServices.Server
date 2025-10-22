@@ -1,4 +1,4 @@
-import { findSimilarReports,getEmbedding } from "../config/LLMconfig.js";
+import { findSimilarReports } from "../config/LLMconfig.js";
 import express from "express";
 
 const router = express.Router();
@@ -7,6 +7,7 @@ router.post("/citizen/report", async (req, res) => {
   try {
     const { message, reports } = req.body;
     const similar = await findSimilarReports(message, reports);
+    console.log("Similar results: ", similar)
     res.status(200).json({ similar });
   } catch (err) {
     console.error(err);

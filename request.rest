@@ -84,3 +84,18 @@ Accept: application/json
 #### suspend user
 
 PATCH http://localhost:3000/super/users/58100f3a-9aac-4fee-8b4e-2ef80e14ca33/suspend
+
+#### similar reports 
+
+POST http://localhost:3000/api/citizen/report
+Content-Type: application/json
+
+{
+  "message": "The whole of Pretoria North has no power right now",
+  "reports": [
+    { "message": "Power outage affecting the whole of Pretoria North" },
+    { "message": "There is No water in our area" },
+    { "message": "Entire place without electricity" },
+    { "message": "Community blackout" }
+  ]
+}

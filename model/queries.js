@@ -57,7 +57,9 @@ const Query = sequelize.define('query', {
         references: {
             model: Citizen,
             key: 'citizen_id'
-        }
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
     },
     set_priotity_score: {
         type: DataTypes.INTEGER,
@@ -67,8 +69,12 @@ const Query = sequelize.define('query', {
             min: 0,
             max:100
         }
+    },
+    priority_status: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: "low",
     }
-  
 },
     {
     timestamps: true,

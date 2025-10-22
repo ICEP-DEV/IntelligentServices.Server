@@ -16,6 +16,7 @@ import seedSuperAdmin from './utils/Seeder.js';
 import createUser from './routes/super/SeederAdmin.js';
 import addAdminUsers from './routes/super/SeederAdmin.js';
 import suspendedUser from './routes/super/SuspendUsers.js'
+import './middlewares/cron.js'
 
 // Other routes
 import lodgeQuery from './routes/lodgeQuery.js';
