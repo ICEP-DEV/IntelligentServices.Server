@@ -48,14 +48,6 @@ const Query = sequelize.define('query', {
         allowNull: false,
    
     },
-    // querytype_id: {
-    //     type: DataTypes.STRING(10),
-    //     allowNull: false,
-    //     references: {
-    //         model: QueryType,
-    //         key: 'querytype_id'
-    //     }
-    // },
     // citizen_id: {
     //     type: DataTypes.STRING(8),
     //     allowNull: false,
@@ -64,8 +56,22 @@ const Query = sequelize.define('query', {
     //         key: 'citizen_id'
     //     },
     //     onUpdate: 'CASCADE',
-    //     onDelete: 'CASCADE',
+    //     onDelete: 'CASCADE'
     // },
+    set_priotity_score: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue:0,
+        validate: {
+            min: 0,
+            max:100
+        }
+    },
+    priority_status: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: "low",
+    }
 },
     {
     timestamps: true,

@@ -16,6 +16,7 @@ import seedSuperAdmin from './utils/Seeder.js';
 import createUser from './routes/super/SeederAdmin.js';
 import addAdminUsers from './routes/super/SeederAdmin.js';
 import suspendedUser from './routes/super/SuspendUsers.js'
+import './middlewares/cron.js'
 
 // Other routes
 import lodgeQuery from './routes/lodgeQuery.js';
@@ -29,6 +30,7 @@ import OtpRoute from './routes/otpRoute.js';
 import getQueries from './routes/getQueries.js';
 import adminStats from './routes/adminStatistics.js'
 
+import similarReports from './routes/SimilarReports.js';
 
 dotenv.config();
 
@@ -67,6 +69,7 @@ app.use('/api', OtpRoute);
 app.use('/api',getQueries);
 app.use('/api',adminStats);
 
+app.use('/api', similarReports)
 
 
 //---------------------
@@ -95,4 +98,4 @@ sequelize.sync()
   })
   .catch(err => console.error('DB connection error:', err));
 
-console.log("JWT_SECRET loaded:", process.env.JWT_SECRET);
+

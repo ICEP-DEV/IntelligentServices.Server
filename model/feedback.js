@@ -14,7 +14,7 @@ const Feedback = sequelize.define('feedback', {
    rating : {
         type: DataTypes.STRING,
         allowNull: false,
-    }
+    },
 }, {
     timestamps: true,
     paranoid: true
