@@ -93,7 +93,7 @@ Content-Type: application/json
 {
   "message": "The whole of Pretoria North has no power right now",
   "reports": [
-    { "message": "Power outage affecting the whole of Pretoria North" },
+    { "message": "Power outage affecting the whole of area" },
     { "message": "There is No water in our area" },
     { "message": "Entire place without electricity" },
     { "message": "Community blackout" }
