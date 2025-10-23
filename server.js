@@ -7,7 +7,7 @@ import resetRoutes from './routes/reset.js';
 import notificationsRoute from './routes/notifications.js';
 import loginRoutes from './routes/login.js';
 import cors from 'cors';
-import { createServer } from 'http';
+import { createServer, get } from 'http';
 import { initSocket } from './config/socket.js';
 import seedSuperAdmin from './utils/Seeder.js';
 
@@ -26,6 +26,9 @@ import totalRequest from './routes/AdminDashboard.js';
 import viewRequestDetails from './routes/AdminDashboard.js';
 import StatsInfo from './routes/StatisticsInfo.js'
 import OtpRoute from './routes/otpRoute.js';
+import getQueries from './routes/getQueries.js';
+import adminStats from './routes/adminStatistics.js'
+
 
 dotenv.config();
 
@@ -61,6 +64,9 @@ app.use('/api', totalRequest);
 app.use('/api', viewRequestDetails);
 app.use('/api', StatsInfo)
 app.use('/api', OtpRoute);
+app.use('/api',getQueries);
+app.use('/api',adminStats);
+
 
 
 //---------------------

@@ -20,6 +20,11 @@ const UnResolvedQueries = sequelize.define('unresolvedQueries', {
         type: DataTypes.STRING,
         allowNull: false
     },
+       complaint_status: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'submitted'
+    },
 }
 , {
     timestamps: true,

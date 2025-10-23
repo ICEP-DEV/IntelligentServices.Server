@@ -36,33 +36,36 @@ const Query = sequelize.define('query', {
    query_status: {
        type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 'pending'
+    defaultValue: 'submitted'
    },
     query_address: {
         type: DataTypes.STRING,
         allowNull: false,
    
     },
-    querytype_id: {
-        type: DataTypes.STRING(10),
+     region: {
+        type: DataTypes.STRING,
         allowNull: false,
-        references: {
-            model: QueryType,
-            key: 'querytype_id'
-        }
+   
     },
-    citizen_id: {
-        type: DataTypes.STRING(8),
-        allowNull: false,
-        references: {
-            model: Citizen,
-            key: 'citizen_id'
-        }
-    },
-    set_priotity_score: {
-        type: DataTypes.INTEGER,
-    }
-  
+    // querytype_id: {
+    //     type: DataTypes.STRING(10),
+    //     allowNull: false,
+    //     references: {
+    //         model: QueryType,
+    //         key: 'querytype_id'
+    //     }
+    // },
+    // citizen_id: {
+    //     type: DataTypes.STRING(8),
+    //     allowNull: false,
+    //     references: {
+    //         model: Citizen,
+    //         key: 'citizen_id'
+    //     },
+    //     onUpdate: 'CASCADE',
+    //     onDelete: 'CASCADE',
+    // },
 },
     {
     timestamps: true,

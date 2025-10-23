@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post("/lodgecomplaint" ,authenticateToken, async(req,res)  =>{
 
-const{query_type,query_service,description,query_id}=req.body
+const{query_type,query_service,description,query_id,complaint_status}=req.body
 
 try {
     
@@ -16,15 +16,15 @@ try {
 
      const recentQuery = await Query.findOne({
       where: { citizen_id: req.user.id },
-      //order: [['createdAt', 'DESC']]  // gets the latest
+      order: [['createdAt', 'DESC']]  // gets the latest
     });
 
-    const newUnresolved = await UnResolvedQueries.create({query_type,query_service,description,citizen_id: req.user.id,query_id:recentQuery.query_id})
+    const newUnresolved = await UnResolvedQueries.create({query_type,query_service,description,citizen_id: req.user.id,query_id:recentQuery.query_id,complaint_status})
 
     return res.status(200).json({message: "The complaint has been lodged"})
 } catch (error) {
     console.error("Lodge Query Error:", error);
-    res.status(500).json({error: "failed to lodge query"})
+    res.status(500).json({error: "failed to lodge a complaint"})
 }
 
 }) 
