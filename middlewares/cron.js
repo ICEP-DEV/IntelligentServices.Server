@@ -1,7 +1,7 @@
 import cron from "node-cron";
 import { UpdatePriorityScores } from "../utils/PriorityMapper.js";
 
-cron.schedule("* */16 * * *", async () => {
+cron.schedule("0 7 * * *", async () => {
   console.log("⚡ Cron job started: Updating priority scores...");
 
   try {

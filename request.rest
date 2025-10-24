@@ -12,7 +12,7 @@ POST http://localhost:3000/api/register/citizen
 Content-Type: application/json
 
 {
-  "email": "dellabrentraolane@gmail.com",
+  "email": "dellar@gmail.com",
   "password": "Franklin@123",
   "firstname": "Della",
   "lastname": "Raolane",
@@ -32,15 +32,21 @@ Content-Type: application/json
 ####
 POST http://localhost:3000/api/lodgequery
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwODE4MmI4Iiwicm9sZSI6ImNpdGl6ZW4iLCJpYXQiOjE3NjEyMDk5MDAsImV4cCI6MTc2MTIyNzkwMH0.m9EoYJe6QzKuDHWRKN75tPznSTvEJXV_w1xvGlBC3jo
 
   {
-  "type": "dellar@gmail.com",
-  "subtype": "Franklin@123",
-  "name": "Della",
-  "email": "Raolane",
-  "contact": "226 west street",
-  "streetnumber": "226 west street",
-   "streetname": "226 west street",
+  "queries": [
+    {
+      "query_description": "Street light not working",
+      "query_status": "submitted",
+      "region": "Region 1",
+      "priority_status": "high",
+      "QueryType": {
+        "query_type": "Electric",
+        "query_subtype": "Street Light"
+      }
+    }
+  ]
 }
 
 #### ADD USER
@@ -99,3 +105,9 @@ Content-Type: application/json
     { "message": "Community blackout" }
   ]
 }
+
+### Fetch all queries 
+
+GET http://localhost:3000/super/getqueries
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA4MzhhMmM2LWM5ZTEtNDkyOC1iOTJiLWMzZTZlNzkxYmZkMiIsInJvbGUiOiJzdXBlcmFkbWluIiwiaWF0IjoxNzYxMjAyMzYwLCJleHAiOjE3NjEyMjAzNjB9.1MlQlsi7otPDpF8y76VZ9xN88RehHYTT1ziSkiNTgAk

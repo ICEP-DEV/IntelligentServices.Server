@@ -77,7 +77,12 @@ const Admin = sequelize.define('Admin', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  isSuspended: {
+    region: {
+        type: DataTypes.STRING,
+        allowNull: false,
+   
+    },
+    isSuspended: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
         freezeTableName: true
@@ -108,10 +113,11 @@ const MunicipalPersonnel = sequelize.define('municipalPersonnel', {
         type: DataTypes.STRING,
         allowNull: true,
     },
-    // role: {
-    //     type: DataTypes.STRING,
-    //     allowNull: false,
-    // },
+     region: {
+        type: DataTypes.STRING,
+        allowNull: false,
+   
+    },
     isSuspended: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,

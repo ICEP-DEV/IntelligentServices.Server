@@ -16,6 +16,7 @@ export default async function seedSuperAdmin() {
       isSuperAdmin: true,
       firstname: 'System',
       lastname: 'Admin',
+      region: 'All',
     });
 
     console.log('Super admin created successfully!');

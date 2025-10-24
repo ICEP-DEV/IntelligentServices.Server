@@ -15,8 +15,9 @@ import seedSuperAdmin from './utils/Seeder.js';
 // Super admin routes
 import createUser from './routes/super/SeederAdmin.js';
 import addAdminUsers from './routes/super/SeederAdmin.js';
-import suspendedUser from './routes/super/SuspendUsers.js'
-import './middlewares/cron.js'
+import suspendedUser from './routes/super/SuspendUsers.js';
+import './middlewares/cron.js';
+import fetchQueries from './routes/super/fetchAll.js'
 
 // Other routes
 import lodgeQuery from './routes/lodgeQuery.js';
@@ -78,6 +79,7 @@ app.use('/api', similarReports)
 app.use('/super', createUser);  
 app.use('/super', addAdminUsers);  
 app.use('/super', suspendedUser);
+app.use('/super', fetchQueries)
 
 
 app.get('/', (req, res) => res.send('API is running'));

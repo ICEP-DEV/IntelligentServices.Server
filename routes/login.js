@@ -39,7 +39,6 @@ router.post('/login', async (req, res) => {
         return res.status(401).json({ error: "Invalid email or password" });
         }
     
-    
 
     // Determine user ID field dynamically
     const userId = user.citizen_id || user.admin_id || user.municipality_id;
@@ -49,6 +48,7 @@ router.post('/login', async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "5h" } 
     );
+    if(!token) return res.status(403).json({ error: "Token Invalid or Token Expired"})
 
     res.status(200).json({
       message: "Login successful",

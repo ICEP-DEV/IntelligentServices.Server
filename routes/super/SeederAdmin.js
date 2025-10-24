@@ -18,9 +18,9 @@ router.post(
   authorizeRole(["superadmin"]),
   async (req, res) => {
     try {
-      const { name, email, role } = req.body;
+      const { name, email, role, region } = req.body;
       
-      if (!name || !email || !role) return res.status(400).json({ error: "Missing fields" });
+      if (!name || !email || !role || !region) return res.status(400).json({ error: "Missing fields" });
       const exists = await isEmailTaken(email);
       if (exists) {
         return res.status(400).json({ error: "Email already exists" });
@@ -36,7 +36,8 @@ router.post(
           lastname: name.split(" ")[1] || "",
           email,
           password: hashPassword,
-          isSuperAdmin: false
+          isSuperAdmin: false,
+          region: region,
         });
       } else if (role === "municipal") {
         newUser = await MunicipalPersonnel.create({
@@ -44,7 +45,7 @@ router.post(
           lastname: name.split(" ")[1] || "",
           email,
           password: hashPassword,
-          isSuperAdmin: false
+          region: region,
         });
       }
       
@@ -63,6 +64,7 @@ router.post(
            lastname: newUser.LastName,
            email: newUser.email,
            role,
+           region,
         },
         });
 
