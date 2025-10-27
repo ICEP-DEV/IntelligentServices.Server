@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
   "email": "dellar@gmail.com",
-  "password": "Franklin@123"
+  "password": "285fcfbe7599cb9c"
 }
 
 ### Register citizen
@@ -52,12 +52,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwODE4MmI4I
 #### ADD USER
 POST http://localhost:3000/super/add-user
 Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA4MzhhMmM2LWM5ZTEtNDkyOC1iOTJiLWMzZTZlNzkxYmZkMiIsInJvbGUiOiJzdXBlcmFkbWluIiwicmVnaW9uIjoiQWxsIiwiaWF0IjoxNzYxNTQ4NzQ1LCJleHAiOjE3NjE1NjY3NDV9.FXv1qgAo5a-0YDkZhh732H3V-fs3gzTVLG-udknEeRc
 
   {
   "email": "dellar@gmail.com",
+  "role": "admin",
   "password": "Franklin@123",
-  "firstname": "Della",
-  "lastname": "Raolane",
+  "name": "Raolane Della",
+  "region": "Region 3"
   }
 
 ### Citizen posts feedback
@@ -100,9 +103,9 @@ Content-Type: application/json
   "message": "The whole of Pretoria North has no power right now",
   "reports": [
     { "message": "Power outage affecting the whole of area" },
-    { "message": "There is No water in our area" },
-    { "message": "Entire place without electricity" },
-    { "message": "Community blackout" }
+    { "message": "There is No water in our area pretoria" },
+    { "message": "Entire place in without electricity" },
+    { "message": "Community blackout in pretoria north" }
   ]
 }
 
@@ -110,4 +113,16 @@ Content-Type: application/json
 
 GET http://localhost:3000/super/getqueries
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA4MzhhMmM2LWM5ZTEtNDkyOC1iOTJiLWMzZTZlNzkxYmZkMiIsInJvbGUiOiJzdXBlcmFkbWluIiwiaWF0IjoxNzYxMjAyMzYwLCJleHAiOjE3NjEyMjAzNjB9.1MlQlsi7otPDpF8y76VZ9xN88RehHYTT1ziSkiNTgAk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA4MzhhMmM2LWM5ZTEtNDkyOC1iOTJiLWMzZTZlNzkxYmZkMiIsInJvbGUiOiJzdXBlcmFkbWluIiwicmVnaW9uIjoiQWxsIiwiaWF0IjoxNzYxNTQ4NzQ1LCJleHAiOjE3NjE1NjY3NDV9.FXv1qgAo5a-0YDkZhh732H3V-fs3gzTVLG-udknEeRc
+
+### Fetch admin and citizen queries
+
+GET http://localhost:3000/api/getqueries
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijg5ZWQ2Mzg1LWM2YTQtNDc0NC1iZjU5LWQ3OWJhODZkNjZkNyIsInJvbGUiOiJhZG1pbiIsInJlZ2lvbiI6IlJlZ2lvbiAzIiwiaWF0IjoxNzYxNTQ5MzcyLCJleHAiOjE3NjE1NjczNzJ9.EkTR1xRV85lavu0ZhQJOl_XWTwX-ORjNENn4UN7pJsA
+
+### Fetch Tech queries
+
+GET http://localhost:3000/api/assigned-queries
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYjhiNWRlLWQ2ZDAtNDg1MC04NDMzLTA4OWQ1NTEwMTVlOCIsInJvbGUiOiJtdW5pY2lwYWwiLCJyZWdpb24iOiJSZWdpb24gMyIsImlhdCI6MTc2MTU2Mzc4NiwiZXhwIjoxNzYxNTgxNzg2fQ.IjjJ545zTyxX5MifpyDgkuuNeOAFK4tz25Q_GnTngdc

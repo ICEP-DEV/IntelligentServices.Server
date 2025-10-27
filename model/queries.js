@@ -43,7 +43,7 @@ const Query = sequelize.define('query', {
         allowNull: false,
    
     },
-     region: {
+    region: {
         type: DataTypes.STRING,
         allowNull: false,
    

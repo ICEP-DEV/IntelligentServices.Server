@@ -25,8 +25,8 @@ QueryType.hasMany(Query,{ foreignKey: 'querytype_id' });
 Query.belongsTo(Admin, { foreignKey: 'admin_id' });
 Admin.hasMany(Query, { foreignKey: 'admin_id' });
 
-Query.belongsTo(MunicipalPersonnel, { foreignKey: 'municipality_id' });
-MunicipalPersonnel.hasMany(Query, { foreignKey: 'municipality_id' });
+Query.belongsToMany(MunicipalPersonnel, { through: "QueryAssignments", foreignKey: 'query_id' });
+MunicipalPersonnel.belongsToMany(Query, { through: "QueryAssignments", foreignKey: 'municipality_id' });
 
 Query.hasMany(Attachment, { foreignKey: 'query_id' });
 Attachment.belongsTo(Query, { foreignKey: 'query_id' });

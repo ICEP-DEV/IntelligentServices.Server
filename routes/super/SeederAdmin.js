@@ -56,7 +56,7 @@ router.post(
       );
       const message = `Your password is ${genPassword}, it is advised to change it when you can`
       await sendEmail("Admin Confirmation Email",newUser.email,token,newUser.firstname,message);
-      
+      console.log(message);
       res.status(201).json({
          message: `${role} created successfully`,
           user: {

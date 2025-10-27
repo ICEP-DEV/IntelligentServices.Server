@@ -1,10 +1,15 @@
 import express from "express";
 import { Admin, MunicipalPersonnel, Citizen } from "../../model/user.js";
 import sendEmail from "../../utils/email.js";
+import authenticateToken from "../../middlewares/authenticateToken.js";
+import { authorizeRole } from "../../middlewares/authorizeRole.js";
 
 const router = express.Router();
 
-router.patch("/users/:id/suspend", async (req, res) => {
+router.patch("/users/:id/suspend",
+  authenticateToken,
+  authorizeRole(["superadmin"]),
+  async (req, res) => {
   const { id } = req.params;
 
   try {

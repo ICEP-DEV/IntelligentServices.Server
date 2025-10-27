@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { Citizen, Admin, MunicipalPersonnel } from '../model/user.js';
 import { isEmailTaken } from '../utils/FindEmail.js';
+import checkSuspended from '../middlewares/checkSuspended.js';
 
 const router = express.Router();
 
@@ -39,16 +40,21 @@ router.post('/login', async (req, res) => {
         return res.status(401).json({ error: "Invalid email or password" });
         }
     
+    if (user.status && user.status.toLowerCase() === "suspended") {
+      return res.status(403).json({ error: "Account suspended. Contact support." });
+    }
 
     // Determine user ID field dynamically
     const userId = user.citizen_id || user.admin_id || user.municipality_id;
 
     const token = jwt.sign(
-      { id: userId, role },
+      { id: userId, role, region: user.region },
       process.env.JWT_SECRET,
       { expiresIn: "5h" } 
     );
     if(!token) return res.status(403).json({ error: "Token Invalid or Token Expired"})
+
+    
 
     res.status(200).json({
       message: "Login successful",
@@ -56,7 +62,8 @@ router.post('/login', async (req, res) => {
       user: {
         id: userId,
         email: user.email,
-        role
+        role,
+        region: user.region || "N/A"
       }
     });
 

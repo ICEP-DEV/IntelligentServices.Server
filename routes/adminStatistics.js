@@ -2,10 +2,16 @@ import express from 'express'
 import { Query, QueryType } from "../model/queries.js";
 import { authenticateToken } from "../middlewares/authenticateToken.js";
 import { UnResolvedQueries } from "../model/complaints.js";
+import checkSuspended from '../middlewares/checkSuspended.js';
+import { authorizeRole } from '../middlewares/authorizeRole.js';
 
 const router = express.Router()
 
-router.get('/admin_stats' , async (req , res) => {
+router.get('/admin_stats',
+    authenticateToken,
+    checkSuspended,
+    authorizeRole(["admin"]),
+    async (req , res) => {
 
     //global counts for admin
     const totalLodged = await Query.count();
@@ -16,11 +22,13 @@ router.get('/admin_stats' , async (req , res) => {
 
     //global view
     const viewQueries = await Query.findAll({
-       include: [{ model: QueryType, attributes: ["query_type", "query_subtype"] }],
+      where: { region: req.user.region },
+      include: [{ model: QueryType, attributes: ["query_type", "query_subtype"] }],
       order: [["createdAt", "DESC"]],
     })
     const viewComplaints = await UnResolvedQueries.findAll()
     const trackStatus = await Query.findAll({
+      where: { region: req.user.region },
       order: [["createdAt", "DESC"]],
       attributes: ["query_status"]
     })

@@ -2,10 +2,11 @@ import express from "express";
 import { Query, QueryType } from "../model/queries.js";
 import { authenticateToken } from "../middlewares/authenticateToken.js";
 import { UnResolvedQueries } from "../model/complaints.js";
+import checkSuspended from "../middlewares/checkSuspended.js";
 const router = express.Router();
 
 // GET /api/dashboard
-router.get("/stats",authenticateToken, async (req, res) => {
+router.get("/stats",authenticateToken,checkSuspended, async (req, res) => {
   try {
     const user = req.user;
     if (!user) {

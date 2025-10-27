@@ -30,8 +30,9 @@ import StatsInfo from './routes/StatisticsInfo.js'
 import OtpRoute from './routes/otpRoute.js';
 import getQueries from './routes/getQueries.js';
 import adminStats from './routes/adminStatistics.js'
-
+import userProfile from './routes/UserProfile.js'
 import similarReports from './routes/SimilarReports.js';
+import assignTech from './routes/AssignTech.js';
 
 dotenv.config();
 
@@ -69,8 +70,9 @@ app.use('/api', StatsInfo)
 app.use('/api', OtpRoute);
 app.use('/api',getQueries);
 app.use('/api',adminStats);
-
-app.use('/api', similarReports)
+app.use('/api',userProfile);
+app.use('/api', similarReports);
+app.use('/api', assignTech);
 
 
 //---------------------
@@ -79,7 +81,7 @@ app.use('/api', similarReports)
 app.use('/super', createUser);  
 app.use('/super', addAdminUsers);  
 app.use('/super', suspendedUser);
-app.use('/super', fetchQueries)
+app.use('/super', fetchQueries);
 
 
 app.get('/', (req, res) => res.send('API is running'));

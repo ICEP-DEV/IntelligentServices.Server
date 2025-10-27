@@ -2,11 +2,18 @@ import express from 'express'
 import {Query, QueryType,Attachment} from '../model/queries.js'
 import { sequelize } from '../config/dbconfig.js';
 import {Citizen} from '../model/user.js'
+import authenticateToken from '../middlewares/authenticateToken.js';
+import { authorizeRole } from '../middlewares/authorizeRole.js';
+import checkSuspended from '../middlewares/checkSuspended.js';
 
 
 const router = express.Router();
 
-router.get('/viewtotalrequest', async(req,res) => {
+router.get('/viewtotalrequest',
+    authenticateToken,
+    checkSuspended,
+    authorizeRole(["admin"]),
+    async(req,res) => {
 
     try {
         const queries = await Query.findAll({
