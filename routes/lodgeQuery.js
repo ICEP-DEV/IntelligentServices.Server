@@ -2,6 +2,7 @@ import express from 'express';
 import multer from 'multer';
 import { Query, QueryType, Attachment } from "../model/queries.js";
 import { authenticateToken } from "../middlewares/authenticateToken.js";
+import checkSuspended from '../middlewares/checkSuspended.js';
 
 const router = express.Router();
 
@@ -13,7 +14,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Lodge a query
-router.post('/lodgequery', authenticateToken, upload.single('photo'), async (req, res) => {
+router.post('/lodgequery', authenticateToken,checkSuspended, upload.single('photo'), async (req, res) => {
   try {
     const { query_type, query_subtype, query_address, query_description ,region} = req.body;
 
@@ -43,7 +44,7 @@ router.post('/lodgequery', authenticateToken, upload.single('photo'), async (req
 
     const query_id = newQuery.query_id;
 
-    // Save attachment if exists
+    //save photo if it exist
     if (photo_url) await Attachment.create({ photo_url, query_id });
 
     return res.status(200).json({

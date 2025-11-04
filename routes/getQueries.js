@@ -31,9 +31,6 @@ router.get('/getqueries',authenticateToken, async (req, res) => {
                  'query_address','region',
                  'createdAt', 
             ],
-            
-            
-
 
         })
         res.status(200).json(queries);

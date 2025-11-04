@@ -1,32 +1,56 @@
-import express  from  'express'
-import { UnResolvedQueries} from '../model/complaints.js';
-import {authenticateToken} from "../middlewares/authenticateToken.js";
-import {Query} from '../model/queries.js'
+import express from "express";
+import multer from "multer";
+import { UnResolvedQueries } from "../model/complaints.js";
+import { authenticateToken } from "../middlewares/authenticateToken.js";
+import { Query } from "../model/queries.js";
+
 const router = express.Router();
 
-router.post("/lodgecomplaint" ,authenticateToken, async(req,res)  =>{
+// Configure multer (store files in memory for now)
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
-const{query_type,query_service,description,query_id,complaint_status}=req.body
+router.post(
+  "/lodgecomplaint",
+  authenticateToken,
+  upload.single("photo"), 
+  async (req, res) => {
+    try {
+      const { query_type, description, reference, complaint_status } = req.body;
 
-try {
-    
-    if(!query_type ||!description){
-        return res.status(400).json({ error: " All the fields must be  must be provided" });
+      if (!query_type || !description || !reference) {
+        return res
+          .status(400)
+          .json({ error: "All required fields must be provided." });
+      }
+
+      // Get the latest query from the logged-in citizen
+      const recentQuery = await Query.findOne({
+        where: { citizen_id: req.user.id },
+        order: [["createdAt", "DESC"]],
+      });
+
+      // Create new complaint entry
+      const newUnresolved = await UnResolvedQueries.create({
+        query_type,
+        description,
+        citizen_id: req.user.id,
+        reference,
+        complaint_status,
+      });
+
+      // Log file info (optional)
+      if (req.file) {
+        console.log("File received:", req.file.originalname);
+        // If you want to store image in DB, you can use req.file.buffer
+      }
+
+      return res.status(200).json({ message: "The complaint has been lodged" });
+    } catch (error) {
+      console.error("Lodge Query Error:", error);
+      res.status(500).json({ error: "Failed to lodge a complaint" });
     }
-
-     const recentQuery = await Query.findOne({
-      where: { citizen_id: req.user.id },
-      order: [['createdAt', 'DESC']]  // gets the latest
-    });
-
-    const newUnresolved = await UnResolvedQueries.create({query_type,query_service,description,citizen_id: req.user.id,query_id:recentQuery.query_id,complaint_status})
-
-    return res.status(200).json({message: "The complaint has been lodged"})
-} catch (error) {
-    console.error("Lodge Query Error:", error);
-    res.status(500).json({error: "failed to lodge a complaint"})
-}
-
-}) 
+  }
+);
 
 export default router;

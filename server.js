@@ -33,6 +33,9 @@ import adminStats from './routes/adminStatistics.js'
 import userProfile from './routes/UserProfile.js'
 import similarReports from './routes/SimilarReports.js';
 import assignTech from './routes/AssignTech.js';
+import queryRoutes from "./routes/Complaint.js";
+
+
 
 dotenv.config();
 
@@ -73,6 +76,7 @@ app.use('/api',adminStats);
 app.use('/api',userProfile);
 app.use('/api', similarReports);
 app.use('/api', assignTech);
+app.use("/api", queryRoutes);
 
 
 //---------------------
