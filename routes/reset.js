@@ -16,7 +16,7 @@ async function findUserByEmail(email) {
 }
 
 
-router.post('/forgot-password',checkSuspended, async (req, res) => {
+router.post('/forgot-password', async (req, res) => {
   const { email } = req.body;
   if (!email) return res.status(400).json({ error: 'Email required' });
 
@@ -28,7 +28,11 @@ router.post('/forgot-password',checkSuspended, async (req, res) => {
     const role = user.isSuperAdmin ? 'superadmin' : user.role || 'citizen';
 
     const token = jwt.sign({ id: userId, email: user.email, role }, process.env.JWT_SECRET, { expiresIn: '10m' });
-    sendEmail("Password reset",user.email,token,user.firstname,"Your password reset link is provided below ,note this link expires after 5 minutes");
+
+    const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
+    const resetLink = `${clientUrl}/reset-password?token=${token}`;
+
+    sendEmail("Password reset",user.email,user.firstname,"Your password reset link is provided below ,note this link expires after 5 minutes",`The reset password link is ${resetLink}, <strong>N.B</strong> it expires after 5 minutes`);
     res.status(200).json({ message: 'Password reset link sent' });
 
   } catch (error) {
@@ -37,7 +41,7 @@ router.post('/forgot-password',checkSuspended, async (req, res) => {
   }
 });
 
-router.post('/reset-password', async (req, res) => {
+router.post('/reset-password',checkSuspended, async (req, res) => {
   const { token, newPassword, confirmPassword } = req.body;
 
   if (!token || !newPassword || !confirmPassword) {

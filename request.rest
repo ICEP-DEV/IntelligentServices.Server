@@ -126,3 +126,23 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijg5ZWQ2Mzg1L
 GET http://localhost:3000/api/assigned-queries
 Accept: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYjhiNWRlLWQ2ZDAtNDg1MC04NDMzLTA4OWQ1NTEwMTVlOCIsInJvbGUiOiJtdW5pY2lwYWwiLCJyZWdpb24iOiJSZWdpb24gMyIsImlhdCI6MTc2MTU2Mzc4NiwiZXhwIjoxNzYxNTgxNzg2fQ.IjjJ545zTyxX5MifpyDgkuuNeOAFK4tz25Q_GnTngdc
+
+### Fetches profile details
+GET http://localhost:3000/api/profile
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjliOWI0MDY2Iiwicm9sZSI6ImNpdGl6ZW4iLCJpYXQiOjE3NjI0MzE4MzUsImV4cCI6MTc2MjQ0OTgzNX0.mqjDHQJe-pKiWzrVN-cPQKnK6Oy4efNocOjye1ZNS7w
+
+### Update user profile
+PUT http://localhost:3000/api/update
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjliOWI0MDY2Iiwicm9sZSI6ImNpdGl6ZW4iLCJpYXQiOjE3NjI0MzE4MzUsImV4cCI6MTc2MjQ0OTgzNX0.mqjDHQJe-pKiWzrVN-cPQKnK6Oy4efNocOjye1ZNS7w
+
+{
+  "email": "tukanedimpho75@gmail.com",
+  "firstname": "Citezen",
+  "lastname": "Kooool",
+  "location": "Soshanguve, Gauteng, South Africa",
+  "phoneNumber": "0712345678",
+  "profilePic": "https://example.com/profilepic.jpg"
+}

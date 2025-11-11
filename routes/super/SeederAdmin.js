@@ -48,14 +48,8 @@ router.post(
           region: region,
         });
       }
-      
-      const token = jwt.sign(
-        { email: newUser.email, role },
-        process.env.JWT_SECRET,
-        { expiresIn: "15m" }
-      );
       const message = `Your password is ${genPassword}, it is advised to change it when you can`
-      await sendEmail("Admin Confirmation Email",newUser.email,token,newUser.firstname,message);
+      await sendEmail(`${role} Confirmation Email`,newUser.email,newUser.firstname,message);
       console.log(message);
       res.status(201).json({
          message: `${role} created successfully`,

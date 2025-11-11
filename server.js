@@ -33,9 +33,8 @@ import adminStats from './routes/adminStatistics.js'
 import userProfile from './routes/UserProfile.js'
 import similarReports from './routes/SimilarReports.js';
 import assignTech from './routes/AssignTech.js';
-import queryRoutes from "./routes/Complaint.js";
-
-
+import settingsProfile from './routes/settings.js';
+import path from 'path';
 
 dotenv.config();
 
@@ -54,6 +53,8 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 app.use(express.json());
+
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 // -----------------------------
 // Routes
@@ -76,7 +77,7 @@ app.use('/api',adminStats);
 app.use('/api',userProfile);
 app.use('/api', similarReports);
 app.use('/api', assignTech);
-app.use("/api", queryRoutes);
+app.use('/api', settingsProfile);
 
 
 //---------------------
