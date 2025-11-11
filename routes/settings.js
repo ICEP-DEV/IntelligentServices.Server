@@ -49,7 +49,7 @@ async function findUserById(id) {
 }
 
 // ----------------------
-// Get user profile (✅ includes role now)
+// Get user profile 
 // ----------------------
 router.get('/profile', authenticateToken, async (req, res) => {
   try {
@@ -68,7 +68,7 @@ router.get('/profile', authenticateToken, async (req, res) => {
         location: user.locationAddress || user.region || null,
         phoneNumber: user.phoneNumber,
         profilePic: user.profilePic,
-        role, // 🟩 added role here
+        role,
       },
     });
   } catch (err) {
@@ -168,7 +168,7 @@ router.post('/upload-profile-pic', upload.single('profilePic'), async (req, res)
 });
 
 // ----------------------
-// Delete user profile (✅ restricted by role)
+// Delete user profile 
 // ----------------------
 router.delete('/delete', authenticateToken, async (req, res) => {
   try {
@@ -177,7 +177,7 @@ router.delete('/delete', authenticateToken, async (req, res) => {
 
     const { user, role } = result;
 
-    // 🛑 Only Admins and Citizens can delete — technicians (MunicipalPersonnel) are blocked
+    // Only Admins and Citizens can delete — technicians (MunicipalPersonnel) are blocked
     if (role === 'municipalPersonnel') {
       return res
         .status(403)
