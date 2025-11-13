@@ -2,6 +2,7 @@ import { UUIDV4 } from 'sequelize';
 import { sequelize, DataTypes } from '../config/dbconfig.js';
 import Notification from './notifications.js';
 import crypto from 'crypto';
+import { phoneNumber } from 'better-auth/plugins';
 
 // Citizen user
 const Citizen = sequelize.define('citizen', {
@@ -36,6 +37,14 @@ const Citizen = sequelize.define('citizen', {
         type: DataTypes.STRING,
         allowNull: true,
     },
+    phoneNumber: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+    profilePic: {
+    type: DataTypes.TEXT('long'), 
+    allowNull: true,
+   },
     isSuspended: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
@@ -77,6 +86,14 @@ const Admin = sequelize.define('Admin', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+   profilePic: {
+    type: DataTypes.TEXT('long'), 
+    allowNull: true,
+   },
+    phoneNumber: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
     region: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -110,6 +127,14 @@ const MunicipalPersonnel = sequelize.define('municipalPersonnel', {
         allowNull: true,
     },
     lastname: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+    profilePic: {
+    type: DataTypes.TEXT('long'), 
+    allowNull: true,
+   },
+    phoneNumber: {
         type: DataTypes.STRING,
         allowNull: true,
     },

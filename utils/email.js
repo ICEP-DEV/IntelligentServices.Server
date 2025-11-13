@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 
-async function sendEmail(title="Password reset",email, token, username,message) {
+async function sendEmail(title="Password reset",email,username,message, resetMsg="") {
   const transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
@@ -9,22 +9,18 @@ async function sendEmail(title="Password reset",email, token, username,message) 
     }
   });
 
-  const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
-  const resetLink = `${clientUrl}/reset-password?token=${token}`;
-
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to: email,
     subject: title,
     html: `<p>Hi ${username},</p>
            <p>${message}</p>
-           <a href="${resetLink}">Reset Password</a>
+           <p>${resetMsg}</p>
            <p>If you did not request this, please ignore this email.</p>`
   };
 
   await transporter.sendMail(mailOptions);
-  console.log(`Password reset email sent to ${email}`);
-  console.log(`Token: ${token}`);
+  console.log(`Password reset email sent to ${email}, reset: ${resetMsg}`);
 }
 
 export default sendEmail;
