@@ -32,7 +32,7 @@ router.get("/stats",authenticateToken,checkSuspended, async (req, res) => {
       where: { citizen_id: user.id },
       order: [["createdAt", "DESC"]],
       limit: 5,
-      attributes: ["id", "query_type", "query_service", "description", "createdAt"],
+      attributes: ["id", "query_type", "reference", "description", "createdAt"],
     });
 
     // Query history for this citizen

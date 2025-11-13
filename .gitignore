@@ -14,4 +14,14 @@ yarn-error.*
 
 # local migrations
 
-./migrations 
+.migrations/ 
+
+
+
+# Ignore specific route files as requested
+routes/getQueries.js
+routes/lodgeComplaint.js
+
+# Ignore local trunk folder
+.trunk/
+

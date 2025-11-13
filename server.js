@@ -9,8 +9,6 @@ import loginRoutes from './routes/login.js';
 import cors from 'cors';
 import { createServer, get } from 'http';
 import { initSocket } from './config/socket.js';
-import { Admin } from './model/user.js';
-import { BOT_USER_ID } from './config/Gemini.js';
 import { seedSuperAdmin, ensureBotUserExists } from './utils/Seeder.js';
 
 // Super admin routes

@@ -1,6 +1,7 @@
 {
   "name": "node-init",
   "version": "1.0.0",
+  "type": "module",
   "main": "app.js",
   "type": "module",
   "scripts": {

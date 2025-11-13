@@ -12,9 +12,9 @@ const UnResolvedQueries = sequelize.define('unresolvedQueries', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    query_service: {
-        type: DataTypes.STRING,
-        allowNull: false
+    reference: {
+    type: DataTypes.STRING,
+    allowNull: false
     },
      description: {
         type: DataTypes.STRING,
