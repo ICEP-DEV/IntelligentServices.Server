@@ -71,6 +71,11 @@ const Query = sequelize.define('query', {
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: "low",
+    },
+    old_status: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: "low",
     }
 },
     {

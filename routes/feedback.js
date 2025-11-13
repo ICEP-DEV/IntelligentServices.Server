@@ -2,11 +2,13 @@ import express from "express";
 import { getSocket } from "../config/socket.js";
 import Feedback from "../model/feedback.js";
 import { Citizen } from "../model/user.js";
+import authenticateToken from "../middlewares/authenticateToken.js";
+import checkSuspended from "../middlewares/checkSuspended.js";
 
 const router = express.Router();
 
 // Citizen feedback submission
-router.post("/citizen/feedback", async (req, res) => {
+router.post("/citizen/feedback",authenticateToken,checkSuspended, async (req, res) => {
   try {
     const { citizen_id, message, rating } = req.body;
 
@@ -52,11 +54,11 @@ router.post("/citizen/feedback", async (req, res) => {
 router.get("/admin/feedback", async (req, res) => {
   try {
     const citizenFeedback = await Feedback.findAll({
-      attributes: ["message", "rating"],
+      attributes: ["message", "rating","createdAt"],
       include: [
         {
           model: Citizen,
-          attributes: ["email", "firstname", "lastname"],
+          attributes: ["email", "firstname", "lastname",],
         },
       ],
       order: [["createdAt", "DESC"]],
