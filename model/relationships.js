@@ -2,7 +2,7 @@ import Notification from "./notifications.js";
 import { Citizen, Admin,MunicipalPersonnel} from "./user.js";
 import {Query} from './queries.js'; 
 import { QueryType ,Attachment} from "./queries.js";
-import {UnResolvedQueries} from "./complaints.js"   ;
+import {UnResolvedQueries ,ComplaintAttachments} from "./complaints.js"   ;
 import Feedback from "./feedback.js";
 
 
@@ -49,6 +49,7 @@ Feedback.belongsTo(Citizen, { foreignKey: "citizen_id" });
 Admin.hasMany(Feedback, { foreignKey: "admin_id" });
 Feedback.belongsTo(Admin, { foreignKey: "admin_id" });
 
-
+UnResolvedQueries.hasMany(ComplaintAttachments,{foreignKey:'id'});
+ComplaintAttachments.belongsTo(UnResolvedQueries,{foreignKey:'id'});
 
 export { Citizen, Notification};

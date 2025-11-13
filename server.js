@@ -34,6 +34,9 @@ import userProfile from './routes/UserProfile.js'
 import similarReports from './routes/SimilarReports.js';
 import assignTech from './routes/AssignTech.js';
 import queryRoutes from "./routes/Complaint.js";
+// import { betterAuth  } from 'better-auth';
+import { fileURLToPath } from 'url';
+import path from 'path';
 
 
 
@@ -42,6 +45,14 @@ dotenv.config();
 
 const app = express();
 const httpServer = createServer(app);
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use('/uploads', (req, res, next) => {
+  console.log(`[UPLOAD REQUEST] ${req.method} ${req.originalUrl}`);
+  next();
+}, express.static(path.join(__dirname, 'uploads')));
 
 
 
@@ -54,6 +65,8 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 app.use(express.json());
+
+
 
 // -----------------------------
 // Routes
