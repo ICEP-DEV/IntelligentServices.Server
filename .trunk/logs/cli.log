@@ -1,8 +1,0 @@
-[11-06 11:33:38] [client.cc:330] prettier - .trunk\trunk.yaml
-[11-06 12:39:44] [login.cc:52] GetUserRequest failed with status 16: No session provided 
-[11-07 12:39:44] [login.cc:52] GetUserRequest failed with status 16: No session provided 
-[11-08 19:54:01] [login.cc:52] GetUserRequest failed with status 16: No session provided 
-[11-09 12:39:46] [login.cc:52] GetUserRequest failed with status 16: No session provided 
-[11-10 10:42:55] [login.cc:52] GetUserRequest failed with status 16: No session provided 
-[11-11 10:42:54] [login.cc:52] GetUserRequest failed with status 16: No session provided 
-[11-11 21:36:14] [upgrade.cc:225] Error during upgrade --notify: cli: 1 linter: 0 plugin: 0 runtime: 0

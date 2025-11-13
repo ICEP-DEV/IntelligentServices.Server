@@ -9,15 +9,16 @@ import loginRoutes from './routes/login.js';
 import cors from 'cors';
 import { createServer, get } from 'http';
 import { initSocket } from './config/socket.js';
-import { seedSuperAdmin, ensureBotUserExists } from './utils/Seeder.js';
+import seedSuperAdmin from './utils/Seeder.js';
+
 
 // Super admin routes
 import createUser from './routes/super/SeederAdmin.js';
 import addAdminUsers from './routes/super/SeederAdmin.js';
 import suspendedUser from './routes/super/SuspendUsers.js';
 import './middlewares/cron.js';
-import './middlewares/messageCleanupCron.js';
 import fetchQueries from './routes/super/fetchAll.js'
+
 // Other routes
 import lodgeQuery from './routes/lodgeQuery.js';
 import lodgeComplaint from './routes/lodgeComplaint.js';
@@ -32,7 +33,8 @@ import adminStats from './routes/adminStatistics.js'
 import userProfile from './routes/UserProfile.js'
 import similarReports from './routes/SimilarReports.js';
 import assignTech from './routes/AssignTech.js';
-import chatbotRouter from './routes/chatbot.js';
+import settingsProfile from './routes/settings.js';
+import path from 'path';
 
 dotenv.config();
 
@@ -51,6 +53,8 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 app.use(express.json());
+
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 // -----------------------------
 // Routes
@@ -73,7 +77,7 @@ app.use('/api',adminStats);
 app.use('/api',userProfile);
 app.use('/api', similarReports);
 app.use('/api', assignTech);
-app.use('/api', chatbotRouter);
+app.use('/api', settingsProfile);
 
 
 //---------------------
@@ -90,10 +94,9 @@ app.get('/', (req, res) => res.send('API is running'));
 // -----------------------------
 // Database + Server + Socket.IO
 // -----------------------------
-sequelize.sync({ alter: true })
+sequelize.sync() 
   .then(async () => {
     console.log('Database connected');
-    await ensureBotUserExists();
     await seedSuperAdmin();
 
     const io = initSocket(httpServer, corsOptions);
@@ -103,3 +106,5 @@ sequelize.sync({ alter: true })
     });
   })
   .catch(err => console.error('DB connection error:', err));
+
+

@@ -4,12 +4,11 @@ import jwt from 'jsonwebtoken';
 import { Citizen, Admin, MunicipalPersonnel } from '../model/user.js';
 import { isEmailTaken } from '../utils/FindEmail.js';
 import checkSuspended from '../middlewares/checkSuspended.js';
-import checkCitizenVerified from '../middlewares/CheckVerificationStatus.js';
 
 const router = express.Router();
 
 // LOGIN
-router.post('/login',checkCitizenVerified, async (req, res) => {
+router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   try {
