@@ -1,0 +1,14 @@
+action_id: trunk-cache-prune
+date: 2025-11-07 09:39:44
+run: trunk cache prune --allow-daemon-start=false
+run_from: ""
+trigger: schedule 24h
+result:
+  exit_code: 0
+  out: ""
+  err: ""
+timestamp: 1762508384
+full_timestamp:
+  nanos: 190137000
+  seconds: 1762508384
+trunk_version: 1.25.0

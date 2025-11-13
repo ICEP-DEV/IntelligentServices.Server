@@ -1,0 +1,18 @@
+action_id: trunk-upgrade-available
+date: 2025-11-09 10:29:21
+run: trunk upgrade --notify --allow-daemon-start=false
+run_from: ""
+trigger: .trunk/trunk.yaml
+result:
+  exit_code: 0
+  out: "notifications_to_delete:\r\n  - trunk-check-upgrade\r\n  - trunk-upgrade\r\n"
+  err: ""
+timestamp: 1762684161
+full_timestamp:
+  nanos: 43790000
+  seconds: 1762684161
+trunk_version: 1.25.0
+action_output:
+  notifications_to_delete:
+    - trunk-check-upgrade
+    - trunk-upgrade

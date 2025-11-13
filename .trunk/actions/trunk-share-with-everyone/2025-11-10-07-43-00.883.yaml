@@ -1,0 +1,17 @@
+action_id: trunk-share-with-everyone
+date: 2025-11-10 07:43:00
+run: trunk config share --notify --allow-daemon-start=false
+run_from: ""
+trigger: .git/info/exclude
+result:
+  exit_code: 0
+  out: "notifications_to_delete:\r\n  - trunk-share-with-everyone\r\n"
+  err: ""
+timestamp: 1762760580
+full_timestamp:
+  nanos: 883802000
+  seconds: 1762760580
+trunk_version: 1.25.0
+action_output:
+  notifications_to_delete:
+    - trunk-share-with-everyone

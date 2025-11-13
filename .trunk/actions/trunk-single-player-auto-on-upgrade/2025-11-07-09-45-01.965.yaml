@@ -1,0 +1,14 @@
+action_id: trunk-single-player-auto-on-upgrade
+date: 2025-11-07 09:45:01
+run: trunk on-upgrade --single-player-only -n --no-progress --allow-daemon-start=false --print-summary --scope=check,plugins,runtimes,tools
+run_from: ""
+trigger: schedule 24h+5m
+result:
+  exit_code: 0
+  out: "\r\n\x1b[1m1 linter was upgraded:\r\n\r\n\x1b[0m  trufflehog \x1b[90m3.90.12\x1b[0m → \x1b[92m3.90.13\x1b[0m\r\n\r\n"
+  err: ""
+timestamp: 1762508701
+full_timestamp:
+  nanos: 965112000
+  seconds: 1762508701
+trunk_version: 1.25.0
