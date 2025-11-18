@@ -180,21 +180,14 @@ export const initSocket = (server, corsOptions) => {
         console.log("Bot response:", botResponseText);
 
         if (botResponseText === '__HUMAN_INTERVENTION__') {
-          // Notify admins about human intervention request
-          const { Admin } = require('../model/user.js');
-          const admins = await Admin.findAll({
-            where: { region: socket.region || 'default' } // Assuming region is set on socket
-          });
-
           const humanInterventionMessage = await Message.create({
             conversation_id: conversationId,
             senderId: BOT_USER_ID,
-            text: "I've transferred your request to a human administrator. An admin will assist you shortly.",
+            text: "To speak with a consultant, please click the 'Connect to a consultant' icon (the person in a tie) at the top right of the chat window.",
           });
 
-          citizenParticipants.forEach((p) => {
-            io.to(`user:${p.citizen_id}`).emit("newMessage", humanInterventionMessage);
-          });
+          // Only send this specific instruction to the user who asked
+          io.to(`user:${socket.userId}`).emit("newMessage", humanInterventionMessage);
           adminParticipants.forEach((p) => {
             io.to(`user:${p.admin_id}`).emit("newMessage", humanInterventionMessage);
           });
@@ -348,6 +341,32 @@ export const initSocket = (server, corsOptions) => {
 
       io.to(`user:${citizenId}`).emit("newMessage", welcomeMessage);
       io.to(`user:${socket.userId}`).emit("newMessage", welcomeMessage);
+    });
+
+    socket.on("requestHumanIntervention", async ({ conversationId }) => {
+      if (!socket.userId || !conversationId) return;
+
+      console.log(`User ${socket.userId} is requesting human intervention for conversation ${conversationId}`);
+
+      // Find all online admins in the user's region
+      const allSockets = await io.fetchSockets();
+      const onlineAdminsInRegion = allSockets.filter(s => s.role === 'admin' && s.region === socket.region);
+
+      if (onlineAdminsInRegion.length === 0) {
+        const noAdminsMsg = await Message.create({ conversation_id: conversationId, senderId: BOT_USER_ID, text: "I'm sorry, but there are no administrators currently available in your region. Please try again later." });
+        return io.to(`user:${socket.userId}`).emit("newMessage", noAdminsMsg);
+      }
+
+      // Notify the available admins
+      onlineAdminsInRegion.forEach((adminSocket) => {
+        io.to(adminSocket.id).emit("humanInterventionRequest", {
+          conversationId,
+          citizenId: socket.userId,
+          message: `A citizen from region '${socket.region}' has requested assistance.`
+        });
+      });
+      const confirmationMsg = await Message.create({ conversation_id: conversationId, senderId: BOT_USER_ID, text: "Your request has been sent to all available online administrators in your region. Someone will join shortly." });
+      io.to(`user:${socket.userId}`).emit("newMessage", confirmationMsg);
     });
 
     socket.on("disconnect", () => {

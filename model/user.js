@@ -50,6 +50,10 @@ const Citizen = sequelize.define('citizen', {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
     },
+    suspendedUntil: {
+        type: DataTypes.DATE,
+        allowNull: true,
+    },
     is_Verified: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
@@ -103,6 +107,10 @@ const Admin = sequelize.define('Admin', {
     isSuspended: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
+    },
+    suspendedUntil: {
+        type: DataTypes.DATE,
+        allowNull: true,
     }
 },{
     timestamps: true,
@@ -149,6 +157,10 @@ const MunicipalPersonnel = sequelize.define('municipalPersonnel', {
     isSuspended: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
+    },
+    suspendedUntil: {
+        type: DataTypes.DATE,
+        allowNull: true,
     },
     isSupervisor: {
         type: DataTypes.BOOLEAN,

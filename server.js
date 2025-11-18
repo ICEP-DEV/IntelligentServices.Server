@@ -33,6 +33,7 @@ import userProfile from './routes/UserProfile.js'
 import similarReports from './routes/SimilarReports.js';
 import assignTech from './routes/AssignTech.js';
 import chatbotRouter from './routes/chatbot.js';
+import geocode from './routes/super/geoCodeAddress.js';
 
 dotenv.config();
 
@@ -83,7 +84,7 @@ app.use('/super', createUser);
 app.use('/super', addAdminUsers);  
 app.use('/super', suspendedUser);
 app.use('/super', fetchQueries);
-
+app.use('/super', geocode)
 
 app.get('/', (req, res) => res.send('API is running'));
 
