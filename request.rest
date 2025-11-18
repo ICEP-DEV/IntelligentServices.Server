@@ -150,3 +150,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjliOWI0MDY2I
   "phoneNumber": "0712345678",
   "profilePic": "https://example.com/profilepic.jpg"
 }
+
+### Fetches geocode details
+GET http://localhost:3000/super/geocode

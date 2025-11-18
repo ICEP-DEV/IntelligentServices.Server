@@ -3,6 +3,7 @@ import authenticateToken from '../middlewares/authenticateToken.js';
 import { authorizeRole } from '../middlewares/authorizeRole.js';
 import { Query } from "../model/queries.js";
 import { MunicipalPersonnel } from '../model/user.js';
+import checkSuspended from '../middlewares/checkSuspended.js';
 
 const router = express.Router();
 
@@ -10,6 +11,7 @@ router.post(
   "/assign-technician",
   authenticateToken,
   authorizeRole(["admin"]),
+  checkSuspended,
   async (req, res) => {
     try {
       const { query_id } = req.body;

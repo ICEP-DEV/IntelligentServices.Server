@@ -1,6 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { sequelize } from './model/index.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import registerRoutes from './routes/register.js';
 import dashboardRoutes from './routes/dashboard.js';
 import resetRoutes from './routes/reset.js';
@@ -9,37 +11,31 @@ import loginRoutes from './routes/login.js';
 import cors from 'cors';
 import { createServer, get } from 'http';
 import { initSocket } from './config/socket.js';
-import seedSuperAdmin from './utils/Seeder.js';
-
+import { seedSuperAdmin, ensureBotUserExists } from './utils/Seeder.js';
 
 // Super admin routes
 import createUser from './routes/super/SeederAdmin.js';
 import addAdminUsers from './routes/super/SeederAdmin.js';
 import suspendedUser from './routes/super/SuspendUsers.js';
 import './middlewares/cron.js';
+import './middlewares/messageCleanupCron.js';
 import fetchQueries from './routes/super/fetchAll.js'
-
 // Other routes
 import lodgeQuery from './routes/lodgeQuery.js';
 import lodgeComplaint from './routes/lodgeComplaint.js';
+import queryRoutes from './routes/Complaint.js';
 import feedbackRoute from './routes/feedback.js';
-import viewTotalRequest from './routes/AdminDashboard.js';
-import totalRequest from './routes/AdminDashboard.js';
-import viewRequestDetails from './routes/AdminDashboard.js';
+import adminDashboardRoutes from './routes/AdminDashboard.js';
 import StatsInfo from './routes/StatisticsInfo.js'
 import OtpRoute from './routes/otpRoute.js';
 import getQueries from './routes/getQueries.js';
 import adminStats from './routes/adminStatistics.js'
 import userProfile from './routes/UserProfile.js'
+import settingsProfile from './routes/settings.js';
 import similarReports from './routes/SimilarReports.js';
 import assignTech from './routes/AssignTech.js';
-import queryRoutes from "./routes/Complaint.js";
-// import { betterAuth  } from 'better-auth';
-import { fileURLToPath } from 'url';
-
-
-import settingsProfile from './routes/settings.js';
-import path from 'path';
+import chatbotRouter from './routes/chatbot.js';
+import geocode from './routes/super/geoCodeAddress.js';
 
 
 dotenv.config();
@@ -50,13 +46,6 @@ const httpServer = createServer(app);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-app.use('/uploads', (req, res, next) => {
-  console.log(`[UPLOAD REQUEST] ${req.method} ${req.originalUrl}`);
-  next();
-}, express.static(path.join(__dirname, 'uploads')));
-
-
 
 // -----------------------------
 // CORS setup
@@ -69,9 +58,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 
-
-
-app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 // -----------------------------
@@ -84,10 +71,8 @@ app.use('/api', loginRoutes);
 app.use('/api/notifications', notificationsRoute);
 app.use('/api', lodgeQuery);
 app.use('/api', lodgeComplaint);
-app.use('/api', feedbackRoute);
-app.use('/api', viewTotalRequest);
-app.use('/api', totalRequest);
-app.use('/api', viewRequestDetails);
+app.use('/api/feedback', feedbackRoute);
+app.use('/api/admin-dashboard', adminDashboardRoutes);
 app.use('/api', StatsInfo)
 app.use('/api', OtpRoute);
 app.use('/api',getQueries);
@@ -95,6 +80,7 @@ app.use('/api',adminStats);
 app.use('/api',userProfile);
 app.use('/api', similarReports);
 app.use('/api', assignTech);
+app.use('/api', chatbotRouter);
 app.use('/api', settingsProfile);
 app.use('/api', queryRoutes);
 
@@ -106,16 +92,17 @@ app.use('/super', createUser);
 app.use('/super', addAdminUsers);  
 app.use('/super', suspendedUser);
 app.use('/super', fetchQueries);
-
+app.use('/super', geocode)
 
 app.get('/', (req, res) => res.send('API is running'));
 
 // -----------------------------
 // Database + Server + Socket.IO
 // -----------------------------
-sequelize.sync() 
+sequelize.sync({ alter: true })
   .then(async () => {
     console.log('Database connected');
+    await ensureBotUserExists();
     await seedSuperAdmin();
 
     const io = initSocket(httpServer, corsOptions);
@@ -125,5 +112,3 @@ sequelize.sync()
     });
   })
   .catch(err => console.error('DB connection error:', err));
-
-

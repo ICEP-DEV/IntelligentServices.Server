@@ -1,8 +1,9 @@
 import express from "express";
-import { Query, QueryType,Attachment } from "../model/queries.js";
-import { ComplaintAttachments, UnResolvedQueries } from "../model/complaints.js";
+import { Query, QueryType } from "../model/queries.js";
+import { UnResolvedQueries } from "../model/complaints.js";
 import { authenticateToken } from "../middlewares/authenticateToken.js";
 import checkSuspended from "../middlewares/checkSuspended.js";
+import { Attachment } from "../model/queries.js";
 import { authorizeRole } from "../middlewares/authorizeRole.js";
 import {Citizen} from "../model/user.js";
 
@@ -17,72 +18,31 @@ router.get(
   async (req, res) => {
     try {
       // Global counts for admin
-      const totalQueries = await Query.count({
-           where: { region: req.user.region },
-     
-      }
-      );
-   const totalComplaints = await UnResolvedQueries.count({
-  include: [
-    {
-      model: Query,
-          attributes: [],      
-          where: { region: req.user.region },
-           required: true 
-        }
-      ]
-    });
-
+      const totalQueries = await Query.count();
+      const totalComplaints = await UnResolvedQueries.count();
       const totalRequests = totalQueries + totalComplaints;
 
-      // Global view of data for admin’s region
+    //   const totalCompleted = await Query.count({ where: { query_status: "Completed" } });
+    //   const totalUrgent = await Query.count({ where: { priority: "Urgent" } });
+
+      //Global view of data for admin’s region
       const viewQueries = await Query.findAll({
         where: { region: req.user.region },
-        include: [
-          { model: QueryType, attributes: ["query_type", "query_subtype"] },
-          { model: Citizen, attributes: ["firstname"] },
-          { model: Attachment, attributes: ["photo_path"] }
-        ],
+        include: [{ model: QueryType, attributes: ["query_type", "query_subtype"] },
+                  {model: Citizen, attributes: ["firstname"]} ],
         order: [["createdAt", "DESC"]],
-      });
-
-      const host = req.get("host"); 
-      const viewQueriesWithImages = viewQueries.map(query => {
-        const attachmentsWithUrls = (query.attachments || [])
-          .filter(att => att.photo_path) 
-          .map(att => ({
-            ...att.toJSON(),
-            photo_url: `http://${host}/uploads/${att.photo_path}`
-          }));
-
-        return {
-          ...query.toJSON(),
-          attachments: attachmentsWithUrls
-        };
       });
 
       const viewComplaints = await UnResolvedQueries.findAll({
-        include: [{ model: Citizen, attributes: ["firstname"]},
-        { model: ComplaintAttachments, attributes: ["photo_path"]},
-         { model: Query, attributes: [],      
-            where: { region: req.user.region },
-             required: true 
-        }
-      ],
+        include: [
+          { model: Citizen, attributes: ["firstname"] },
+          {
+            model: Attachment,
+            as: "complaintAttachments",
+            attributes: ["photo_path"],
+          },
+        ],
         order: [["createdAt", "DESC"]],
-      });
-        const viewComplaintsWithImages = viewComplaints.map(unresolvedQueries => {
-        const attachmentsWithUrls = (unresolvedQueries.ComplaintAttachments || [])
-          .filter(att => att.photo_path)
-          .map(att => ({
-            ...att.toJSON(),
-            photo_url: `http://${req.get("host")}/uploads/${att.photo_path}`
-          }));
-
-        return {
-          ...unresolvedQueries.toJSON(),
-          attachments: attachmentsWithUrls
-        };
       });
 
       const trackStatus = await Query.findAll({
@@ -91,15 +51,17 @@ router.get(
         attributes: ["query_status"],
       });
 
-      // Send everything back
+      //  Send everything back in expected format
       res.json({
         counts: {
           totalQueries,
           totalComplaints,
-          totalRequests,
+          totalRequests
+        //   totalCompleted,
+        //   totalUrgent,
         },
-        viewQueries: viewQueriesWithImages,
-        viewComplaints: viewComplaintsWithImages,
+        viewQueries,
+        viewComplaints,
         trackStatus,
       });
     } catch (err) {

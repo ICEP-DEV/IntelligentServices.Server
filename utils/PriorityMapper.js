@@ -16,7 +16,7 @@ export async function UpdatePriorityScores() {
 
   for (const q of queries) {
     let increment = 5;
-    let currStatus = q.priority_status;
+    let currStatus = q.old_status;
     let currScore = q.set_priotity_score;
     let newStatus = currStatus;
     let newScore = currScore + increment;
@@ -26,7 +26,7 @@ export async function UpdatePriorityScores() {
         newStatus = "medium";
         if (newScore >= 80) newScore = 79;
       }
-    } else if (currStatus === "medium") {
+    }else if (currStatus === "medium") {
       if (newScore >= 80) {
         newStatus = "high";
         if (newScore >= 100) newScore = 99;

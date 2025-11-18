@@ -5,3 +5,13 @@ npm install           # install deps #
 node exportSeedData.js # create seeds #
 
 
+########### run migrations ##############
+
+npx sequelize-cli migration:generate --name create-citizens
+npx sequelize-cli migration:generate --name create-admins
+npx sequelize-cli migration:generate --name create-municipal-personnel
+npx sequelize-cli migration:generate --name create-conversations
+npx sequelize-cli migration:generate --name create-messages
+npx sequelize-cli migration:generate --name create-user-conversations
+
+#################################################################
