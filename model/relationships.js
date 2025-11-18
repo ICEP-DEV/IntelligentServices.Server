@@ -5,7 +5,6 @@ import { QueryType ,Attachment} from "./queries.js";
 import {UnResolvedQueries} from "./complaints.js"   ;
 import Feedback from "./feedback.js";
 import { Conversation, Message } from "./message.js";
-import UserConversation from "./CitizenConversation.js";
 import AdminConversation from "./AdminConversation.js";
 import CitizenConversation from "./CitizenConversation.js";
 
@@ -40,6 +39,9 @@ UnResolvedQueries.belongsTo(Query, { foreignKey: "query_id" });
 Citizen.hasMany(UnResolvedQueries, { foreignKey: 'citizen_id' });
 UnResolvedQueries.belongsTo(Citizen, { foreignKey: 'citizen_id' });
 
+UnResolvedQueries.hasMany(Attachment, { foreignKey: 'complaint_id', as: 'complaintAttachments' });
+Attachment.belongsTo(UnResolvedQueries, { foreignKey: 'complaint_id' });
+
 Admin.hasMany(UnResolvedQueries, { foreignKey: 'admin_id' });
 UnResolvedQueries.belongsTo(Admin, { foreignKey: 'admin_id' });
 
@@ -52,7 +54,6 @@ Feedback.belongsTo(Citizen, { foreignKey: "citizen_id" });
 Admin.hasMany(Feedback, { foreignKey: "admin_id" });
 Feedback.belongsTo(Admin, { foreignKey: "admin_id" });
 
-// Citizen ↔ Conversation (via UserConversation)
 Citizen.belongsToMany(Conversation, {
   through: CitizenConversation,
   foreignKey: "citizen_id",
@@ -62,7 +63,6 @@ Conversation.belongsToMany(Citizen, {
   foreignKey: "conversation_id",
 });
 
-// Admin ↔ Conversation (via UserConversation)
 Admin.belongsToMany(Conversation, {
   through: AdminConversation,
   foreignKey: "admin_id",
@@ -72,7 +72,6 @@ Conversation.belongsToMany(Admin, {
   foreignKey: "conversation_id",
 });
 
-// Conversation ↔ Message
 Conversation.hasMany(Message, {
   foreignKey: "conversation_id",
   onDelete: "CASCADE",
@@ -81,11 +80,10 @@ Message.belongsTo(Conversation, {
   foreignKey: "conversation_id",
 });
 
-// Citizen ↔ Message
 Citizen.hasMany(Message, {
   foreignKey: "senderId",
   sourceKey: "citizen_id",
-  constraints: false, // No DB-level FK constraint as senderId is polymorphic
+  constraints: false,
 });
 Message.belongsTo(Citizen, {
   foreignKey: "senderId",
@@ -93,7 +91,6 @@ Message.belongsTo(Citizen, {
   constraints: false,
 });
 
-// Admin ↔ Message
 Admin.hasMany(Message, {
   foreignKey: "senderId",
   sourceKey: "admin_id",

@@ -8,7 +8,7 @@ import checkSuspended from "../middlewares/checkSuspended.js";
 const router = express.Router();
 
 // Citizen feedback submission
-router.post("/citizen/feedback",authenticateToken,checkSuspended, async (req, res) => {
+router.post("/citizen",authenticateToken,checkSuspended, async (req, res) => {
   try {
     const { citizen_id, message, rating } = req.body;
 
@@ -51,7 +51,7 @@ router.post("/citizen/feedback",authenticateToken,checkSuspended, async (req, re
   }
 });
 
-router.get("/admin/feedback", async (req, res) => {
+router.get("/admin", async (req, res) => {
   try {
     const citizenFeedback = await Feedback.findAll({
       attributes: ["message", "rating","createdAt"],

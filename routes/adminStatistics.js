@@ -3,6 +3,7 @@ import { Query, QueryType } from "../model/queries.js";
 import { UnResolvedQueries } from "../model/complaints.js";
 import { authenticateToken } from "../middlewares/authenticateToken.js";
 import checkSuspended from "../middlewares/checkSuspended.js";
+import { Attachment } from "../model/queries.js";
 import { authorizeRole } from "../middlewares/authorizeRole.js";
 import {Citizen} from "../model/user.js";
 
@@ -33,9 +34,15 @@ router.get(
       });
 
       const viewComplaints = await UnResolvedQueries.findAll({
-        include: [{ model: Citizen, attributes: ["firstname"] }],
+        include: [
+          { model: Citizen, attributes: ["firstname"] },
+          {
+            model: Attachment,
+            as: "complaintAttachments",
+            attributes: ["photo_path"],
+          },
+        ],
         order: [["createdAt", "DESC"]],
-
       });
 
       const trackStatus = await Query.findAll({

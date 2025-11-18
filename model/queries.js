@@ -91,23 +91,19 @@ const Attachment = sequelize.define('attachment', {
         primaryKey: true
     },
      
-    photo_url: {
+    photo_path: {
         type: DataTypes.STRING,
         allowNull: true,
     },
+    complaint_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+    },
     
-    query_id: {
-        type: DataTypes.STRING(10),
-        allowNull: false,
-        references: {
-            model: Query,
-            key: 'query_id'
-        }
-    }
 }, {
     timestamps: true,
     paranoid: true
 });
 
-export {QueryType,Query,Attachment};
 
+export {QueryType,Query,Attachment};

@@ -3,6 +3,7 @@ import multer from 'multer';
 import { Query, QueryType, Attachment } from "../model/queries.js";
 import { authenticateToken } from "../middlewares/authenticateToken.js";
 import checkSuspended from '../middlewares/checkSuspended.js';
+import path from 'path';
 
 const router = express.Router();
 
@@ -32,15 +33,20 @@ router.post('/lodgequery', internalAuth, checkSuspended, upload.single('photo'),
       return res.status(400).json({ error: "All fields must be provided" });
     }
 
-    // Handle photo
-    let photo_url = null;
-    if (req.file) photo_url = req.file.path;
+    // Handle photo safely
+    let photo_path = null;
+    if (req.file) {
+      const filename = path.basename(req.file.filename).replace(/\\/g, '/'); 
+      console.log("[UPLOAD SAVED] File path:", filename);
+      photo_path = filename;
+    }
 
     // Create or find QueryType
     const [queryTypeRecord] = await QueryType.findOrCreate({
       where: { query_type, query_subtype },
       defaults: { query_type, query_subtype },
     });
+
 
     // Create Query
     const newQuery = await Query.create({
@@ -55,10 +61,17 @@ router.post('/lodgequery', internalAuth, checkSuspended, upload.single('photo'),
       set_priotity_score
     });
 
+ 
+
     const query_id = newQuery.query_id;
 
-    //save photo if it exist
-    if (photo_url) await Attachment.create({ photo_url, query_id });
+    // Save photo if it exists
+    if (photo_path) {
+      await Attachment.create({
+        query_id,
+        photo_path
+      });
+    }
 
     return res.status(200).json({
       message: "The Query has been lodged",
@@ -67,8 +80,9 @@ router.post('/lodgequery', internalAuth, checkSuspended, upload.single('photo'),
     });
 
   } catch (error) {
-    console.error("Lodge Query Error:", error);
-    res.status(500).json({ error: "Failed to lodge query" });
+    console.error("Lodge Query Error:", error.message);
+    console.error("Full error:", error);
+    res.status(500).json({ error: error.message });
   }
 });
 
