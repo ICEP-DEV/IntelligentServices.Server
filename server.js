@@ -33,6 +33,10 @@ import adminStats from './routes/adminStatistics.js'
 import userProfile from './routes/UserProfile.js'
 import similarReports from './routes/SimilarReports.js';
 import assignTech from './routes/AssignTech.js';
+import queriesRoute from './routes/Complaint.js';
+import citizenDetailsRoute from './routes/citizenDetails.js';
+import AdminReport from './routes/report.js'
+
 
 import queryRoutes from "./routes/Complaint.js";
 // import { betterAuth  } from 'better-auth';
@@ -97,6 +101,9 @@ app.use('/api',userProfile);
 app.use('/api', similarReports);
 app.use('/api', assignTech);
 app.use('/api', settingsProfile);
+app.use('/api/',queryRoutes);
+app.use('/api', citizenDetailsRoute);
+app.use('/api', AdminReport);
 
 
 //---------------------
@@ -113,7 +120,7 @@ app.get('/', (req, res) => res.send('API is running'));
 // -----------------------------
 // Database + Server + Socket.IO
 // -----------------------------
-sequelize.sync() 
+sequelize.sync({alter: true}) 
   .then(async () => {
     console.log('Database connected');
     await seedSuperAdmin();

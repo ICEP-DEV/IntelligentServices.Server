@@ -17,7 +17,7 @@ const upload = multer({ storage });
 // Lodge a query
 router.post('/lodgequery', authenticateToken, checkSuspended, upload.single('photo'), async (req, res) => {
   try {
-    const { query_type, query_subtype, query_address, query_description, region } = req.body;
+    const { query_type, query_subtype, query_address, query_description, region ,name , email , phoneNumber } = req.body;
 
     if (!query_type || !query_subtype || !query_address || !query_description || !region) {
       return res.status(400).json({ error: "All fields must be provided" });
@@ -45,7 +45,10 @@ router.post('/lodgequery', authenticateToken, checkSuspended, upload.single('pho
       query_address,
       citizen_id: req.user.id,
       query_status: "submitted",
-      region
+      region,
+      name,
+      email,
+      phoneNumber
     });
 
  

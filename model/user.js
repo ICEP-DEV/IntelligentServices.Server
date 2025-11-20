@@ -7,7 +7,7 @@ import { phoneNumber } from 'better-auth/plugins';
 // Citizen user
 const Citizen = sequelize.define('citizen', {
     citizen_id: {
-         type: DataTypes.STRING(8),
+         type: DataTypes.STRING(36),
                 defaultValue: () => crypto.randomBytes(4).toString('hex'),
                 primaryKey: true
     },

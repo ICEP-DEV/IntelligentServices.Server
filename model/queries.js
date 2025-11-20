@@ -1,6 +1,7 @@
 import { sequelize, DataTypes } from "../config/dbconfig.js";
 import crypto from 'crypto';
 import { Citizen } from './user.js';
+// import { email } from "better-auth";
 
 const QueryType = sequelize.define('queryType', {
    querytype_id: {
@@ -42,6 +43,18 @@ const Query = sequelize.define('query', {
         type: DataTypes.STRING,
         allowNull: false,
    
+    },
+    name: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+    email: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+    phoneNumber: {
+        type: DataTypes.STRING,
+        allowNull: true,
     },
     region: {
         type: DataTypes.STRING,

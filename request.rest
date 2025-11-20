@@ -150,3 +150,22 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjliOWI0MDY2I
   "phoneNumber": "0712345678",
   "profilePic": "https://example.com/profilepic.jpg"
 }
+### citizen info
+GET http://localhost:3000/api/citizen_details/
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI1NjE1Yjk1Iiwicm9sZSI6ImNpdGl6ZW4iLCJpYXQiOjE3NjMzODA5ODcsImV4cCI6MTc2MzM5ODk4N30.JTUA5GPaQEaatFsOAZGx8WMCUKXhS-_cBmOrNJ-n1fg
+
+### admin report
+POST http://localhost:3000/api/admin_report/
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNhNGNjMmM4LTRmNzMtNDkxMS05NjE2LTAyYjRiYjljMTcyOSIsInJvbGUiOiJhZG1pbiIsInJlZ2lvbiI6IlJlZ2lvbiAxIiwiaWF0IjoxNzYzNjI4MjAyLCJleHAiOjE3NjM2NDYyMDJ9.TRM1BrrHl5TEEuIUlYkQFFBfizL0xlowBgLMm2cz8Uo
+
+{
+  "date": "2025-01-20",
+  "queries": 10,
+  "complaints": 3,
+  "false_queries": 1,
+  "urgent_queries": 2
+}

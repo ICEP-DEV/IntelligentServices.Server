@@ -1,6 +1,7 @@
 import express from "express";
 import { Query, QueryType } from "../model/queries.js";
 import { authenticateToken } from "../middlewares/authenticateToken.js";
+import { Op } from "sequelize";
 
 const router = express.Router();
 
@@ -8,7 +9,22 @@ router.get("/queries/by-type/:type", authenticateToken, async (req, res) => {
   try {
     const { type } = req.params;
 
+    const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
+    const sixHoursAgo = new Date(Date.now() - 6 * 60 * 60 * 1000);
+
     const queries = await Query.findAll({
+  where: {
+    [Op.or]: [
+      {
+        query_status: "submitted",
+        createdAt: { [Op.lt]: thirtyMinutesAgo } 
+      },
+      {
+        query_status: { [Op.not]: "resolved" },
+        createdAt: { [Op.lt]: sixHoursAgo }     
+      }
+    ]
+  },
       include: [
         {
           model: QueryType,
