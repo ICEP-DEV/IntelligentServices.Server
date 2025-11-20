@@ -7,6 +7,16 @@ import path from 'path';
 
 const router = express.Router();
 
+// Middleware for internal service calls
+const internalAuth = (req, res, next) => {
+  const internalUserId = req.headers['x-internal-user-id'];
+  if (internalUserId) {
+    req.user = { id: internalUserId };
+    return next();
+  }
+  return authenticateToken(req, res, next);
+};
+
 // Multer setup
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, "uploads/"),
@@ -15,9 +25,9 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Lodge a query
-router.post('/lodgequery', authenticateToken, checkSuspended, upload.single('photo'), async (req, res) => {
+router.post('/lodgequery', internalAuth, checkSuspended, upload.single('photo'), async (req, res) => {
   try {
-    const { query_type, query_subtype, query_address, query_description, region ,name , email , phoneNumber } = req.body;
+    const { query_type, query_subtype, query_address, query_description ,region,old_status,priority_status,set_priotity_score, name , email , phoneNumber} = req.body;
 
     if (!query_type || !query_subtype || !query_address || !query_description || !region) {
       return res.status(400).json({ error: "All fields must be provided" });
@@ -48,7 +58,10 @@ router.post('/lodgequery', authenticateToken, checkSuspended, upload.single('pho
       region,
       name,
       email,
-      phoneNumber
+      phoneNumber,
+      old_status,
+      priority_status,
+      set_priotity_score
     });
 
  

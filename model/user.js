@@ -25,6 +25,7 @@ const Citizen = sequelize.define('citizen', {
         allowNull: true,
     },
     area: {
+        
         type: DataTypes.STRING,
         allowNull:true,
     },
@@ -48,6 +49,10 @@ const Citizen = sequelize.define('citizen', {
     isSuspended: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
+    },
+    suspendedUntil: {
+        type: DataTypes.DATE,
+        allowNull: true,
     },
     is_Verified: {
         type: DataTypes.BOOLEAN,
@@ -102,8 +107,14 @@ const Admin = sequelize.define('Admin', {
     isSuspended: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
-        freezeTableName: true
+    },
+    suspendedUntil: {
+        type: DataTypes.DATE,
+        allowNull: true,
     }
+},{
+    timestamps: true,
+    freezeTableName: true
 });
 
 // Municipal personnel user
@@ -141,12 +152,20 @@ const MunicipalPersonnel = sequelize.define('municipalPersonnel', {
      region: {
         type: DataTypes.STRING,
         allowNull: false,
-   
+
     },
     isSuspended: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
-    }
+    },
+    suspendedUntil: {
+        type: DataTypes.DATE,
+        allowNull: true,
+    },
+    isSupervisor: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+    },
 }, {
     timestamps: true,
     paranoid: true,
@@ -160,4 +179,3 @@ export {
     MunicipalPersonnel,
     sequelize
 };
-

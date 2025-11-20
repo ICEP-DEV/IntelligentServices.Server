@@ -2,9 +2,11 @@ import Notification from "./notifications.js";
 import { Citizen, Admin,MunicipalPersonnel} from "./user.js";
 import {Query} from './queries.js'; 
 import { QueryType ,Attachment} from "./queries.js";
-import {UnResolvedQueries ,ComplaintAttachments} from "./complaints.js"   ;
+import {UnResolvedQueries} from "./complaints.js"   ;
 import Feedback from "./feedback.js";
-
+import { Conversation, Message } from "./message.js";
+import AdminConversation from "./AdminConversation.js";
+import CitizenConversation from "./CitizenConversation.js";
 
 Notification.belongsToMany(Citizen, 
     {through: 'CitizenNotifications',
@@ -37,6 +39,9 @@ UnResolvedQueries.belongsTo(Query, { foreignKey: "query_id" });
 Citizen.hasMany(UnResolvedQueries, { foreignKey: 'citizen_id' });
 UnResolvedQueries.belongsTo(Citizen, { foreignKey: 'citizen_id' });
 
+UnResolvedQueries.hasMany(Attachment, { foreignKey: 'complaint_id', as: 'complaintAttachments' });
+Attachment.belongsTo(UnResolvedQueries, { foreignKey: 'complaint_id' });
+
 Admin.hasMany(UnResolvedQueries, { foreignKey: 'admin_id' });
 UnResolvedQueries.belongsTo(Admin, { foreignKey: 'admin_id' });
 
@@ -49,7 +54,52 @@ Feedback.belongsTo(Citizen, { foreignKey: "citizen_id" });
 Admin.hasMany(Feedback, { foreignKey: "admin_id" });
 Feedback.belongsTo(Admin, { foreignKey: "admin_id" });
 
-UnResolvedQueries.hasMany(ComplaintAttachments,{foreignKey:'id'});
-ComplaintAttachments.belongsTo(UnResolvedQueries,{foreignKey:'id'});
+Citizen.belongsToMany(Conversation, {
+  through: CitizenConversation,
+  foreignKey: "citizen_id",
+});
+Conversation.belongsToMany(Citizen, {
+  through: CitizenConversation,
+  foreignKey: "conversation_id",
+});
+
+Admin.belongsToMany(Conversation, {
+  through: AdminConversation,
+  foreignKey: "admin_id",
+});
+Conversation.belongsToMany(Admin, {
+  through: AdminConversation,
+  foreignKey: "conversation_id",
+});
+
+Conversation.hasMany(Message, {
+  foreignKey: "conversation_id",
+  onDelete: "CASCADE",
+});
+Message.belongsTo(Conversation, {
+  foreignKey: "conversation_id",
+});
+
+Citizen.hasMany(Message, {
+  foreignKey: "senderId",
+  sourceKey: "citizen_id",
+  constraints: false,
+});
+Message.belongsTo(Citizen, {
+  foreignKey: "senderId",
+  targetKey: "citizen_id",
+  constraints: false,
+});
+
+Admin.hasMany(Message, {
+  foreignKey: "senderId",
+  sourceKey: "admin_id",
+  constraints: false,
+});
+Message.belongsTo(Admin, {
+  foreignKey: "senderId",
+  targetKey: "admin_id",
+  constraints: false,
+});
 
 export { Citizen, Notification};

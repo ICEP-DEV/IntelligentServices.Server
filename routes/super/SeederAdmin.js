@@ -18,7 +18,7 @@ router.post(
   authorizeRole(["superadmin"]),
   async (req, res) => {
     try {
-      const { name, email, role, region } = req.body;
+      const { name, email, role, region,supervisor } = req.body;
       
       if (!name || !email || !role || !region) return res.status(400).json({ error: "Missing fields" });
       const exists = await isEmailTaken(email);
@@ -46,6 +46,7 @@ router.post(
           email,
           password: hashPassword,
           region: region,
+          isSupervisor: supervisor,
         });
       }
       const message = `Your password is ${genPassword}, it is advised to change it when you can`
@@ -55,7 +56,7 @@ router.post(
          message: `${role} created successfully`,
           user: {
            firstname: newUser.firstname,
-           lastname: newUser.LastName,
+           lastname: newUser.lastName,
            email: newUser.email,
            role,
            region,
@@ -77,23 +78,24 @@ router.get(
     try {
       const admins = await Admin.findAll({
         where: { isSuperAdmin: false },
-        attributes: ["admin_id", "firstname", "lastname", "email"],
+        attributes: ["admin_id", "firstname", "lastname", "email","isSuspended","region"],
       });
 
       const municipals = await MunicipalPersonnel.findAll({
-        attributes: ["municipality_id", "firstname", "lastname", "email"],
+        attributes: ["municipality_id", "firstname", "lastname", "email","isSuspended","region","isSupervisor"],
       });
 
       const citizens = await Citizen.findAll({
-        attributes: ["citizen_id", "firstname", "lastname", "email"],
+        attributes: ["citizen_id", "firstname", "lastname", "email","isSuspended"],
       });
 
       const users = [
-        ...admins.map(u => ({ id: u.admin_id, firstname: u.firstname, lastname: u.lastname, email: u.email, isSuspended: u.isSuspended, role: "admin" })),
-        ...municipals.map(u => ({ id: u.municipality_id, firstname: u.firstname, lastname: u.lastname, email: u.email, isSuspended: u.isSuspended, role: "municipal" })),
-        ...citizens.map(u => ({ id: u.citizen_id, firstname: u.firstname, lastname: u.lastname, email: u.email, isSuspended: u.isSuspended, isVerified: u.is_Verified, role: "citizen" })),
+        ...admins.map(u => ({ userId: u.admin_id, firstname: u.firstname, lastname: u.lastname, email: u.email, isSuspended: u.isSuspended,region: u.region, role: "admin" })),
+        ...municipals.map(u => ({ userId: u.municipality_id, firstname: u.firstname, lastname: u.lastname, email: u.email, isSuspended: u.isSuspended,region: u.region, role: u.isSupervisor ? "supervisor" : "technician", region: u.region  })),
+        ...citizens.map(u => ({ userId: u.citizen_id, firstname: u.firstname, lastname: u.lastname, email: u.email, isSuspended: u.isSuspended, isVerified: u.is_Verified, role: "citizen",region: "N/A"})),
       ];
 
+     
 
       res.status(200).json({ users });
     } catch (err) {

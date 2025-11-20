@@ -84,6 +84,11 @@ const Query = sequelize.define('query', {
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: "low",
+    },
+    old_status: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: "low",
     }
 },
     {
@@ -103,6 +108,10 @@ const Attachment = sequelize.define('attachment', {
         type: DataTypes.STRING,
         allowNull: true,
     },
+    complaint_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+    },
     
 }, {
     timestamps: true,
@@ -111,4 +120,3 @@ const Attachment = sequelize.define('attachment', {
 
 
 export {QueryType,Query,Attachment};
-
