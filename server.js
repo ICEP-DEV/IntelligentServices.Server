@@ -35,6 +35,7 @@ import similarReports from './routes/SimilarReports.js';
 import assignTech from './routes/AssignTech.js';
 import settingsProfile from './routes/settings.js';
 import path from 'path';
+import userRoutes from './routes/userRoutes.js';
 
 dotenv.config();
 
@@ -78,6 +79,9 @@ app.use('/api',userProfile);
 app.use('/api', similarReports);
 app.use('/api', assignTech);
 app.use('/api', settingsProfile);
+
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+app.use('/api/users', userRoutes);
 
 
 //---------------------
