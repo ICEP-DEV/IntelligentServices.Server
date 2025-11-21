@@ -37,6 +37,10 @@ import queriesRoute from './routes/Complaint.js';
 import citizenDetailsRoute from './routes/citizenDetails.js';
 import AdminReport from './routes/report.js'
 // import { betterAuth  } from 'better-auth';
+import acceptedTicketsRoutes from './routes/AcceptedTickets.js';
+
+
+
 import settingsProfile from './routes/settings.js';
 import chatbotRouter from './routes/chatbot.js';
 import geocode from './routes/super/geoCodeAddress.js';
@@ -68,6 +72,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // -----------------------------
 // Routes
 // -----------------------------
+app.use('/api', acceptedTicketsRoutes);
 app.use('/api', registerRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api', resetRoutes);

@@ -2,7 +2,7 @@ import { sequelize, DataTypes } from "../config/dbconfig.js";
 
 const AdminReport = sequelize.define('adminReport', {
     report_id: {
-        type: DataTypes.STRING(10),
+        type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false
