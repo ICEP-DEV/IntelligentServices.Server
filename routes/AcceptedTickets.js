@@ -1,6 +1,7 @@
 import express from "express";
 import { Op } from "sequelize";
-import { Query } from "../model/queries.js";
+// Make sure QueryType is imported
+import { Query, QueryType } from "../model/queries.js";
 import { MunicipalPersonnel } from "../model/user.js";
 import authenticateToken from "../middlewares/authenticateToken.js";
 
@@ -48,7 +49,9 @@ router.get("/assigned-queries-accepted", authenticateToken, async (req, res) => 
         query_status: {
           [Op.in]: ['accepted', 'onsite', 'in progress', 'resolved']
         }
-      }
+      },
+      // Include the QueryType model to get the query_type string
+      include: [{ model: QueryType, attributes: ["query_type"] }]
     });
     res.status(200).json({ acceptedQueries });
   } catch (error) {
