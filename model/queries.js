@@ -39,6 +39,14 @@ const Query = sequelize.define('query', {
     allowNull: false,
     defaultValue: 'submitted'
    },
+    isAssigned: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+    },
+    municipality_id: {
+        type: DataTypes.UUID,
+        allowNull: true,
+    },
     query_address: {
         type: DataTypes.STRING,
         allowNull: false,

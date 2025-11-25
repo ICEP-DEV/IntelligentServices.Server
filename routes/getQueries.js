@@ -47,7 +47,9 @@ router.get('/assigned-queries',authenticateToken, async (req, res) => {
             include: [
                 {
                     model: Query,
-                    through: { attributes: [] }
+                    where: { isAssigned: false }, // Only include queries that are not yet accepted
+                    through: { attributes: [] },
+                    required: false // Use left join to still get technician if no queries are assigned
                 }
             ]
         });
