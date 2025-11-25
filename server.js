@@ -37,11 +37,15 @@ import queriesRoute from './routes/Complaint.js';
 import profileDetailsRoute from './routes/ProfileDetails.js';
 import AdminReport from './routes/report.js'
 // import { betterAuth  } from 'better-auth';
+import acceptedTicketsRoutes from './routes/AcceptedTickets.js';
+
+
+
 import settingsProfile from './routes/settings.js';
 import userRoutes from './routes/userRoutes.js';
 import chatbotRouter from './routes/chatbot.js';
 import geocode from './routes/super/geoCodeAddress.js';
-
+import TechReport from './routes/TechReport.js'
 
 dotenv.config();
 
@@ -69,6 +73,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // -----------------------------
 // Routes
 // -----------------------------
+app.use('/api', acceptedTicketsRoutes);
 app.use('/api', registerRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api', resetRoutes);
@@ -90,6 +95,7 @@ app.use('/api', settingsProfile);
 app.use('/api/',queryRoutes);
 app.use('/api', profileDetailsRoute);
 app.use('/api', AdminReport);
+app.use('/api' , TechReport)
 
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 app.use('/api/users', userRoutes);
