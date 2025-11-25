@@ -40,7 +40,7 @@ import AdminReport from './routes/report.js'
 import settingsProfile from './routes/settings.js';
 import chatbotRouter from './routes/chatbot.js';
 import geocode from './routes/super/geoCodeAddress.js';
-
+import TechReport from './routes/TechReport.js'
 
 dotenv.config();
 
@@ -89,6 +89,7 @@ app.use('/api', settingsProfile);
 app.use('/api/',queryRoutes);
 app.use('/api', citizenDetailsRoute);
 app.use('/api', AdminReport);
+app.use('/api' , TechReport)
 
 
 //---------------------

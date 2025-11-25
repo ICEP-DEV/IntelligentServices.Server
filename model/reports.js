@@ -2,7 +2,7 @@ import { sequelize, DataTypes } from "../config/dbconfig.js";
 
 const AdminReport = sequelize.define('adminReport', {
     report_id: {
-        type: DataTypes.STRING(10),
+        type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false
@@ -38,32 +38,33 @@ const AdminReport = sequelize.define('adminReport', {
 });
 
 
-const TechnicianReport = sequelize.define('technicianReport', {
-    report_id: {
-        type: DataTypes.STRING(10),
-        primaryKey: true,
-        allowNull: false
-    },
-    date: {
-        type: DataTypes.DATEONLY,
-        allowNull: false
-    },
-    queries_resolved: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    urgent_queries_resolved: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    technician_id: {
-        type: DataTypes.STRING(10),
-        allowNull: false
-    }
+const TechnicianReport = sequelize.define("technicianReport", {
+  date: {
+    type: DataTypes.DATEONLY,
+    allowNull: false,
+  },
+  queryName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  workSummary: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+  },
+  issuesFaced: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+  },
+  hoursWorked: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  recommendations: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+  },
 }, {
-    timestamps: true,
-    paranoid: true,
-    freezeTableName: true
+  timestamps: true,
 });
 
-export {AdminReport} ;
+export  {AdminReport ,TechnicianReport};
