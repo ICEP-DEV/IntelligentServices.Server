@@ -18,11 +18,17 @@ router.get(
   async (req, res) => {
     try {
       // Global counts for admin
-      const totalQueries = await Query.count();
-      const totalComplaints = await UnResolvedQueries.count();
+      const totalQueries = await Query.count({
+        where: {region: req.user.region}
+      }
+        
+      );
+      const totalComplaints = await UnResolvedQueries.count({
+     
+      });
       const totalRequests = totalQueries + totalComplaints;
 
-    //   const totalCompleted = await Query.count({ where: { query_status: "Completed" } });
+     const totalCompleted = await Query.count({ where: { query_status: "resolved" } });
     //   const totalUrgent = await Query.count({ where: { priority: "Urgent" } });
 
       //Global view of data for admin’s region
@@ -34,7 +40,9 @@ router.get(
       });
 
       const viewComplaints = await UnResolvedQueries.findAll({
+
         include: [
+   
           { model: Citizen, attributes: ["firstname"] },
           {
             model: Attachment,
@@ -56,8 +64,8 @@ router.get(
         counts: {
           totalQueries,
           totalComplaints,
-          totalRequests
-        //   totalCompleted,
+          totalRequests,
+          totalCompleted,
         //   totalUrgent,
         },
         viewQueries,

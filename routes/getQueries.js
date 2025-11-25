@@ -20,7 +20,8 @@ router.get('/getqueries',authenticateToken, async (req, res) => {
         }
 
         const queries = await Query.findAll({
-        
+            
+            where: whereClause ,
             include: [{ model: QueryType, attributes: ["query_type", "query_subtype"] }],
             order: [["createdAt", "DESC"]],
 
@@ -47,9 +48,9 @@ router.get('/assigned-queries',authenticateToken, async (req, res) => {
             include: [
                 {
                     model: Query,
-                    where: { isAssigned: false }, // Only include queries that are not yet accepted
+                    where: { isAssigned: false },
                     through: { attributes: [] },
-                    required: false // Use left join to still get technician if no queries are assigned
+                    required: false 
                 }
             ]
         });
