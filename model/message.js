@@ -1,47 +1,52 @@
-import { sequelize, DataTypes } from '../config/dbconfig.js';
+import { sequelize, DataTypes } from "../config/dbconfig.js";
 
-const Message = sequelize.define("Messages", {
-    message_id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        primaryKey: true
-    },
+const Conversation = sequelize.define(
+  "Conversation",
+  {
     conversation_id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV1,
-        allowNull: true,
-        references: {
-            model: 'Conversations',
-            key: 'conversation_id'
-        },
-        onDelete: 'CASCADE',
-        // onUpdate: 'CASCADE'
-    },
-    senderId: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        constraints: false // Explicitly disable foreign key constraints for this polymorphic column
-    },
-    text: {
-        type: DataTypes.TEXT,
-        allowNull: false
-    },
-    seen: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-    }
-})
-
-const Conversation = sequelize.define("Conversations", {
-    conversation_id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV1,
-        primaryKey: true
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
     },
     is_group: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
-    }
-})
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+  },
+  {
+    tableName: "Conversations",
+    timestamps: true,
+  }
+);
 
-export {Message,Conversation};
+const Message = sequelize.define(
+  "Message",
+  {
+    message_id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+    },
+    conversation_id: {
+      type: DataTypes.UUID,
+      allowNull: false,
+    },
+    senderId: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    text: {
+      type: DataTypes.TEXT,
+    },
+    image_url: { // New field for image URLs
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+  },
+  {
+    tableName: "Messages",
+    timestamps: true,
+  }
+);
+
+export { Conversation, Message };

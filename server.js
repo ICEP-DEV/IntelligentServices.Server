@@ -19,7 +19,8 @@ import addAdminUsers from './routes/super/SeederAdmin.js';
 import suspendedUser from './routes/super/SuspendUsers.js';
 import './middlewares/cron.js';
 import './middlewares/messageCleanupCron.js';
-import fetchQueries from './routes/super/fetchAll.js'
+import fetchQueries from './routes/super/fetchAll.js';
+import noticeBoardRoutes from './routes/super/notice.js';
 // Other routes
 import lodgeQuery from './routes/lodgeQuery.js';
 import lodgeComplaint from './routes/lodgeComplaint.js';
@@ -36,6 +37,7 @@ import similarReports from './routes/SimilarReports.js';
 import assignTech from './routes/AssignTech.js';
 import chatbotRouter from './routes/chatbot.js';
 import geocode from './routes/super/geoCodeAddress.js';
+import adminChatbotRouter from './routes/adminChatbot.js';
 
 
 dotenv.config();
@@ -81,6 +83,7 @@ app.use('/api',userProfile);
 app.use('/api', similarReports);
 app.use('/api', assignTech);
 app.use('/api', chatbotRouter);
+app.use('/api/admin', adminChatbotRouter);
 app.use('/api', settingsProfile);
 app.use('/api', queryRoutes);
 
@@ -93,6 +96,7 @@ app.use('/super', addAdminUsers);
 app.use('/super', suspendedUser);
 app.use('/super', fetchQueries);
 app.use('/super', geocode)
+app.use('/super', noticeBoardRoutes);
 
 app.get('/', (req, res) => res.send('API is running'));
 

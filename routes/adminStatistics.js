@@ -21,11 +21,6 @@ router.get(
       const totalQueries = await Query.count();
       const totalComplaints = await UnResolvedQueries.count();
       const totalRequests = totalQueries + totalComplaints;
-
-    //   const totalCompleted = await Query.count({ where: { query_status: "Completed" } });
-    //   const totalUrgent = await Query.count({ where: { priority: "Urgent" } });
-
-      //Global view of data for admin’s region
       const viewQueries = await Query.findAll({
         where: { region: req.user.region },
         include: [{ model: QueryType, attributes: ["query_type", "query_subtype"] },

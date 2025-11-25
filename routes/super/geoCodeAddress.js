@@ -9,12 +9,13 @@ router.get("/geocode", async (req, res) => {
 
     const queries = await Query.findAll({
         attributes: [
-        'query_id', 
+        'query_id',
         'query_address',
         'query_description',
         "region",
         "query_status",
-        "priority_status"]
+        "priority_status",
+        "createdAt"]
     });
 
     const results = [];

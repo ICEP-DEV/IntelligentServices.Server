@@ -48,16 +48,6 @@ const Query = sequelize.define('query', {
         allowNull: false,
    
     },
-    // citizen_id: {
-    //     type: DataTypes.STRING(8),
-    //     allowNull: false,
-    //     references: {
-    //         model: Citizen,
-    //         key: 'citizen_id'
-    //     },
-    //     onUpdate: 'CASCADE',
-    //     onDelete: 'CASCADE'
-    // },
     set_priotity_score: {
         type: DataTypes.INTEGER,
         allowNull: false,

@@ -28,10 +28,7 @@ router.post("/citizen",authenticateToken,checkSuspended, async (req, res) => {
       return res.status(404).json({ error: "Citizen not found" });
     }
 
-    const feedback = await Feedback.create({
-      message,
-      rating,
-    });
+    const feedback = await citizen.createFeedback({ message, rating });
 
     const io = getSocket();
     io.to("admin-role").emit("newFeedback",  {
@@ -58,7 +55,7 @@ router.get("/admin", async (req, res) => {
       include: [
         {
           model: Citizen,
-          attributes: ["email", "firstname", "lastname",],
+          attributes: ["firstname", "lastname"],
         },
       ],
       order: [["createdAt", "DESC"]],
