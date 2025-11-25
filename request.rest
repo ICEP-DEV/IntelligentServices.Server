@@ -151,10 +151,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjliOWI0MDY2I
   "profilePic": "https://example.com/profilepic.jpg"
 }
 ### citizen info
-GET http://localhost:3000/api/citizen_details/
+GET http://localhost:3000/api/profile_details/
 Content-Type: application/json
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI1NjE1Yjk1Iiwicm9sZSI6ImNpdGl6ZW4iLCJpYXQiOjE3NjMzODA5ODcsImV4cCI6MTc2MzM5ODk4N30.JTUA5GPaQEaatFsOAZGx8WMCUKXhS-_cBmOrNJ-n1fg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjUwMjY1ZDI0LTdiZmEtNDlmZC05MmFhLTg4YzM2Zjc3ZjBkMyIsInJvbGUiOiJtdW5pY2lwYWwiLCJyZWdpb24iOiJSZWdpb24gMSIsImlhdCI6MTc2Mzk2OTk4NywiZXhwIjoxNzYzOTg3OTg3fQ.lrAcra1i_zYNKERIgdENnVdca2laWZha7DimuYnKqB8
 
 ### admin report
 POST http://localhost:3000/api/admin_report/
