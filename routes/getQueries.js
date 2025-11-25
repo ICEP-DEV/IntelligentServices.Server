@@ -21,7 +21,6 @@ router.get('/getqueries',authenticateToken, async (req, res) => {
 
         const queries = await Query.findAll({
         
-            where: whereClause,
             include: [{ model: QueryType, attributes: ["query_type", "query_subtype"] }],
             order: [["createdAt", "DESC"]],
 

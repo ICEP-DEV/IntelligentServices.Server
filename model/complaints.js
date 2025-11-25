@@ -31,4 +31,22 @@ const UnResolvedQueries = sequelize.define('unresolvedQueries', {
     paranoid: true
 });
 
-export {UnResolvedQueries}
+const ComplaintAttachments = sequelize.define('complaintAttachments', {
+      photo_id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
+     
+    photo_path: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+},
+    {
+    timestamps: true,
+    paranoid: true
+});
+
+
+export {UnResolvedQueries, ComplaintAttachments};
