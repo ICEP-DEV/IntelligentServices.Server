@@ -32,13 +32,23 @@ import OtpRoute from './routes/otpRoute.js';
 import getQueries from './routes/getQueries.js';
 import adminStats from './routes/adminStatistics.js'
 import userProfile from './routes/UserProfile.js'
-import settingsProfile from './routes/settings.js';
 import similarReports from './routes/SimilarReports.js';
 import assignTech from './routes/AssignTech.js';
+import queriesRoute from './routes/Complaint.js';
+import profileDetailsRoute from './routes/ProfileDetails.js';
+import AdminReport from './routes/report.js'
+// import { betterAuth  } from 'better-auth';
+import acceptedTicketsRoutes from './routes/AcceptedTickets.js';
+
+
+
+import settingsProfile from './routes/settings.js';
+import userRoutes from './routes/userRoutes.js';
 import chatbotRouter from './routes/chatbot.js';
 import geocode from './routes/super/geoCodeAddress.js';
 import adminChatbotRouter from './routes/adminChatbot.js';
 
+import TechReport from './routes/TechReport.js'
 
 dotenv.config();
 
@@ -53,7 +63,7 @@ const __dirname = path.dirname(__filename);
 // CORS setup
 // -----------------------------
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: "http://localhost:5173", //stop your million running servers and leave this alone
   methods: ["GET", "POST", "PUT","PATCH", "DELETE", "OPTIONS"],
 };
 app.use(cors(corsOptions));
@@ -66,6 +76,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // -----------------------------
 // Routes
 // -----------------------------
+app.use('/api', acceptedTicketsRoutes);
 app.use('/api', registerRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api', resetRoutes);
@@ -85,7 +96,13 @@ app.use('/api', assignTech);
 app.use('/api', chatbotRouter);
 app.use('/api/admin', adminChatbotRouter);
 app.use('/api', settingsProfile);
-app.use('/api', queryRoutes);
+app.use('/api/',queryRoutes);
+app.use('/api', profileDetailsRoute);
+app.use('/api', AdminReport);
+app.use('/api' , TechReport)
+
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+app.use('/api/users', userRoutes);
 
 
 //---------------------
@@ -103,7 +120,7 @@ app.get('/', (req, res) => res.send('API is running'));
 // -----------------------------
 // Database + Server + Socket.IO
 // -----------------------------
-sequelize.sync({ alter: true })
+sequelize.sync({alter: true}) 
   .then(async () => {
     console.log('Database connected');
     await ensureBotUserExists();
