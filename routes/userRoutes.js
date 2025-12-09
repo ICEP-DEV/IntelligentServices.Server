@@ -1,5 +1,4 @@
 import express from 'express';
-import { auth } from '../middlewares/auth.js'; 
 import { upload } from '../middlewares/upload.js';
 import { Citizen } from '../model/user.js';
 import authenticateToken from '../middlewares/authenticateToken.js';

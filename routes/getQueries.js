@@ -49,9 +49,15 @@ router.get('/assigned-queries',authenticateToken, async (req, res) => {
                 {
                     model: Query,
                     where: { isAssigned: false },
+                    required: false,
                     through: { attributes: [] },
-                    required: false 
-                }
+                    include: [
+                        {
+                            model: QueryType,
+                            required: false,
+                        },
+                    ],
+                },
             ]
         });
 

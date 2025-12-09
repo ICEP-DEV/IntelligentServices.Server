@@ -18,6 +18,16 @@ Citizen.belongsToMany(Notification,
     foreignKey: 'citizen_id'
 });
 
+Notification.belongsToMany(MunicipalPersonnel, {
+  through: 'TechnicianNotifications',
+  foreignKey: 'notification_id'
+});
+
+MunicipalPersonnel.belongsToMany(Notification, {
+  through: 'TechnicianNotifications',
+  foreignKey: 'municipality_id'
+});
+
 Query.belongsTo(Citizen, { foreignKey: 'citizen_id' });
 Citizen.hasMany(Query,{ foreignKey: 'citizen_id' });
 

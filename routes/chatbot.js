@@ -3,6 +3,7 @@ import express from "express";
 import { getGeminiResponse, BOT_USER_ID } from "../config/Gemini.js";
 import { authenticateToken } from "../middlewares/authenticateToken.js";
 import { Conversation, Message } from "../model/message.js";
+import AdminConversation from "../model/AdminConversation.js";
 import UserConversation from "../model/CitizenConversation.js";
 import { sequelize } from "../model/index.js";
 import { Admin, Citizen } from "../model/user.js";

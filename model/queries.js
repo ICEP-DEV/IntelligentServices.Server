@@ -1,7 +1,6 @@
 import { sequelize, DataTypes } from "../config/dbconfig.js";
 import crypto from 'crypto';
 import { Citizen } from './user.js';
-// import { email } from "better-auth";
 
 const QueryType = sequelize.define('queryType', {
    querytype_id: {
