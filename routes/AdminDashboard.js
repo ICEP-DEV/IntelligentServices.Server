@@ -36,8 +36,8 @@ router.get('/viewtotalrequest',
 router.get('/totalrequest', async(req,res) =>{
 
     try {
-          const [results] = await sequelize.query("SELECT COUNT(*) AS total FROM queries");
-          res.json({ total: results[0].total });
+          const total = await Query.count();
+          res.json({ total });
 
     } catch (error) {
         console.error(error);

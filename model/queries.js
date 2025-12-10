@@ -1,7 +1,6 @@
 import { sequelize, DataTypes } from "../config/dbconfig.js";
 import crypto from 'crypto';
 import { Citizen } from './user.js';
-// import { email } from "better-auth";
 
 const QueryType = sequelize.define('queryType', {
    querytype_id: {
@@ -69,16 +68,6 @@ const Query = sequelize.define('query', {
         allowNull: false,
    
     },
-    // citizen_id: {
-    //     type: DataTypes.STRING(8),
-    //     allowNull: false,
-    //     references: {
-    //         model: Citizen,
-    //         key: 'citizen_id'
-    //     },
-    //     onUpdate: 'CASCADE',
-    //     onDelete: 'CASCADE'
-    // },
     set_priotity_score: {
         type: DataTypes.INTEGER,
         allowNull: false,

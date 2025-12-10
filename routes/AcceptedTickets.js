@@ -49,6 +49,7 @@ router.get("/assigned-queries-accepted", authenticateToken, async (req, res) => 
         query_status: {
           [Op.in]: ['accepted', 'onsite', 'in progress', 'resolved']
         }
+
       },
       // Include the QueryType model to get the query_type string
       include: [{ model: QueryType, attributes: ["query_type"] }]
@@ -92,6 +93,35 @@ router.put("/update-ticket-status/:ticketId", authenticateToken, async (req, res
   } catch (error) {
     console.error("Error updating ticket status:", error);
     res.status(500).json({ error: "Server error while updating ticket status." });
+  }
+});
+
+router.put("/query/accepted/:queryId", authenticateToken, async (req, res) => {
+  const { queryId } = req.params;
+  const citizenId = req.user.id;
+
+  try {
+    const query = await Query.findByPk(queryId);
+
+    if (!query) {
+      return res.status(404).json({ error: "Query not found." });
+    }
+
+    if (query.citizen_id !== citizenId) {
+      return res.status(403).json({
+        error: "You are not authorized to update this query."
+      });
+    }
+    query.query_status = "approved";
+    await query.save();
+
+    res.status(200).json({
+      message: "Query successfully accepted by citizen!",
+      query_status: query.query_status
+    });
+  } catch (error) {
+    console.error("Error accepting query:", error);
+    res.status(500).json({ error: "Server error while accepting the query." });
   }
 });
 

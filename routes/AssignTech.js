@@ -3,6 +3,8 @@ import authenticateToken from '../middlewares/authenticateToken.js';
 import { authorizeRole } from '../middlewares/authorizeRole.js';
 import { Query } from "../model/queries.js";
 import { MunicipalPersonnel } from '../model/user.js';
+import Notification from '../model/notifications.js';
+import { getSocket } from '../config/socket.js';
 import checkSuspended from '../middlewares/checkSuspended.js';
 
 const router = express.Router();
@@ -33,11 +35,26 @@ router.post(
         return res.status(404).json({ error: "No technicians found in this region" });
       }
 
+      // await query.addMunicipalPersonnels(technicians);
       await query.addMunicipalPersonnels(technicians);
       query.query_status = "assigned";
       await query.save();
 
-      res.json({
+      // --- Notification Logic ---
+      const io = getSocket();
+      const notificationMessage = `You have been assigned a new query: #${query.query_id}`;
+      const notificationPromises = technicians.map(async (technician) => {
+        const notification = await Notification.create({
+          type: 'New Assignment',
+          message: notificationMessage,
+        });
+        await notification.addMunicipalPersonnel(technician);
+        io.to(`user:${technician.municipality_id}`).emit('newAssignment', query);
+      });
+
+      await Promise.all(notificationPromises);
+
+      res.status(200).json({
         message: `Query ${query.query_id} assigned to all technicians in region ${query.region}`
       });
 

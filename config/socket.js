@@ -133,15 +133,15 @@ export const initSocket = (server, corsOptions) => {
       socket.emit("conversationHistory", messages);
     });
 
-    socket.on("sendMessage", async ({ conversationId, text }) => {
+    socket.on("sendMessage", async ({ conversationId, text, imageUrl }) => {
       if (!socket.userId) return socket.emit("authError", { message: "Not authorized." });
       if (!conversationId) return socket.emit("authError", { message: "Conversation not established." });
-
-      // Save user's message
+      if (!text && !imageUrl) return socket.emit("authError", { message: "Cannot send an empty message." });
       const message = await Message.create({
         conversation_id: conversationId,
         senderId: socket.userId,
         text,
+        image_url: imageUrl, // Save the image URL
       });
 
       // Notify participants
@@ -161,7 +161,6 @@ export const initSocket = (server, corsOptions) => {
 
       // Bot responds to citizen messages
       if (socket.role === "citizen") {
-        console.log("Bot will respond to citizen message");
         const dbHistory = await Message.findAll({
           where: { conversation_id: conversationId },
           order: [["createdAt", "DESC"]],
@@ -174,11 +173,7 @@ export const initSocket = (server, corsOptions) => {
             role: msg.senderId === BOT_USER_ID ? "model" : "user",
             parts: [{ text: msg.text }],
           }));
-
-        console.log("Gemini history length:", geminiHistory.length);
         const botResponseText = await getGeminiResponse(geminiHistory, socket.role, socket.userId, socket.region);
-        console.log("Bot response:", botResponseText);
-
         if (botResponseText === '__HUMAN_INTERVENTION__') {
           const humanInterventionMessage = await Message.create({
             conversation_id: conversationId,
@@ -324,8 +319,6 @@ export const initSocket = (server, corsOptions) => {
         conversation_id: conversationId,
         }
       });
-
-      // Notify the citizen that an admin has joined
       io.to(`user:${citizenId}`).emit("adminJoinedConversation", {
         conversationId,
         adminId: socket.userId,
@@ -356,8 +349,6 @@ export const initSocket = (server, corsOptions) => {
         const noAdminsMsg = await Message.create({ conversation_id: conversationId, senderId: BOT_USER_ID, text: "I'm sorry, but there are no administrators currently available in your region. Please try again later." });
         return io.to(`user:${socket.userId}`).emit("newMessage", noAdminsMsg);
       }
-
-      // Notify the available admins
       onlineAdminsInRegion.forEach((adminSocket) => {
         io.to(adminSocket.id).emit("humanInterventionRequest", {
           conversationId,

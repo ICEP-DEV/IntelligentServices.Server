@@ -16,21 +16,21 @@ router.post('/login',checkCitizenVerified, async (req, res) => {
     let user = null;
     let role = null;
 
-    
+    const [citizen, admin, municipal] = await Promise.all([
+      Citizen.findOne({ where: { email } }),
+      Admin.findOne({ where: { email } }),
+      MunicipalPersonnel.findOne({ where: { email } }),
+    ]);
 
-    user = await Citizen.findOne({ where: { email } });
-    if (user) role = "citizen";
-
-    if (!user) {
-      user = await Admin.findOne({ where: { email } });
-      if (user) {
-        role = user.isSuperAdmin ? "superadmin" : "admin";
-      }
-    }
-
-    if (!user) {
-      user = await MunicipalPersonnel.findOne({ where: { email } });
-      if (user) role = "municipal";
+    if (citizen) {
+      user = citizen;
+      role = "citizen";
+    } else if (admin) {
+      user = admin;
+      role = admin.isSuperAdmin ? "superadmin" : "admin";
+    } else if (municipal) {
+      user = municipal;
+      role = "municipal";
     }
 
     if (!user) {

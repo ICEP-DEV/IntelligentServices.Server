@@ -62,7 +62,8 @@ router.post(
            region,
         },
         });
-
+      console.log(`[SUPERADMIN] Created new ${role}:`, newUser.email);
+      console.log(`Temporary password for ${newUser.email}: ${genPassword}`);
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: "Server error" });
