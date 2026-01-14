@@ -1,10 +1,17 @@
 {
   "development": {
-    "username": "root",
-    "password": null,
-    "database": "municipalhub",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "username": "avnadmin",
+    "password": "AVNS_W3i3mn2vvkcZKkwfFvg",
+    "database": "defaultdb",
+    "host": "municipalhub-municipalhub.g.aivencloud.com",
+    "port": 22592,
+    "dialect": "mysql",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
   },
   "test": {
     "username": "root",

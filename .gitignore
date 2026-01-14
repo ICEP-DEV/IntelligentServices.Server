@@ -15,7 +15,7 @@ yarn-error.*
 # local migrations
 
 .migrations/ 
-
+./migrations
 
 
 # Ignore specific route files as requested

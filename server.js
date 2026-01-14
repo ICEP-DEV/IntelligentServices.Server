@@ -19,6 +19,7 @@ import addAdminUsers from './routes/super/SeederAdmin.js';
 import suspendedUser from './routes/super/SuspendUsers.js';
 import './middlewares/cron.js';
 import './middlewares/messageCleanupCron.js';
+import './middlewares/ApproveCron.js'
 import fetchQueries from './routes/super/fetchAll.js';
 import noticeBoardRoutes from './routes/super/notice.js';
 // Other routes
@@ -34,7 +35,6 @@ import adminStats from './routes/adminStatistics.js'
 import userProfile from './routes/UserProfile.js'
 import similarReports from './routes/SimilarReports.js';
 import assignTech from './routes/AssignTech.js';
-import queriesRoute from './routes/Complaint.js';
 import profileDetailsRoute from './routes/ProfileDetails.js';
 import AdminReport from './routes/report.js'
 // import { betterAuth  } from 'better-auth';
@@ -63,7 +63,7 @@ const __dirname = path.dirname(__filename);
 // CORS setup
 // -----------------------------
 const corsOptions = {
-  origin: "http://localhost:5173", //stop your million running servers and leave this alone
+  origin: "https://intelligent-services-web.vercel.app", //stop your million running servers and leave this alone
   methods: ["GET", "POST", "PUT","PATCH", "DELETE", "OPTIONS"],
 };
 app.use(cors(corsOptions));
@@ -120,7 +120,7 @@ app.get('/', (req, res) => res.send('API is running'));
 // -----------------------------
 // Database + Server + Socket.IO
 // -----------------------------
-sequelize.sync({alter: true}) 
+sequelize.authenticate()
   .then(async () => {
     console.log('Database connected');
     await ensureBotUserExists();

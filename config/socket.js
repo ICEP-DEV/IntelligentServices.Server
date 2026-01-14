@@ -13,7 +13,6 @@ export const initSocket = (server, corsOptions) => {
 
   io.on("connection", (socket) => {
     console.log("New client connected:", socket.id);
-
     // ================= Notifications / Rooms =================
     socket.on("subscribeToNotifications", (room) => {
       socket.join(room);
@@ -26,8 +25,6 @@ export const initSocket = (server, corsOptions) => {
       socket.region = region;
       socket.join(`user:${userId}`);
       console.log(`User ${userId} registered with role ${role}`);
-
-      // Admins join feedback hub
       if (role === "admin") {
         socket.join("feedback-hub");
         const feedbacks = await Feedback.findAll({
@@ -36,7 +33,6 @@ export const initSocket = (server, corsOptions) => {
         socket.emit("loadFeedbackHub", feedbacks);
       }
     });
-
     // ================= Conversations =================
     socket.on("startConversation", async ({ users }) => {
       if (!socket.userId) return socket.emit("authError", { message: "Not authorized." });
@@ -65,51 +61,68 @@ export const initSocket = (server, corsOptions) => {
       });
     });
 
-    socket.on("getPrivateConversation", async ({ recipientId }) => {
+    socket.on("getPrivateConversation", async ({ citizenId, adminId }) => {
       if (!socket.userId) return socket.emit("authError", { message: "Not authorized." });
 
-      // Find conversations where both citizens are participants
-      const userConvos = await UserConversation.findAll({
-          where: { citizen_id: [socket.userId, recipientId] },
-          attributes: ['conversation_id', [fn('COUNT', col('conversation_id')), 'count']],
-          group: ['conversation_id'],
-          having: { count: 2 }
-      })
-
-      let existingConvo = null;
-      for (let convo of userConvos) {
-        if (convo.get("count") >= 2) {
-          const totalCitizenParticipants = await UserConversation.count({
-            where: { conversation_id: convo.conversation_id },
-          });
-          const totalAdminParticipants = await AdminConversation.count({
-            where: { conversation_id: convo.conversation_id },
-          });
-          if (totalCitizenParticipants === 2 && totalAdminParticipants === 0) {
-            existingConvo = convo;
-            break;
-          }
-        }
+      // Security Check: Ensure the requester is one of the participants
+      if (socket.userId !== citizenId && socket.userId !== adminId) {
+        return socket.emit("authError", { message: "You are not authorized to view this conversation." });
       }
 
-      if (existingConvo) {
-        const conversation = await Conversation.findByPk(existingConvo.conversation_id);
-        socket.emit("conversationStarted", conversation);
-      } else {
-        // If no conversation exists, create one
-        const conversation = await Conversation.create();
-        let participants = [socket.userId, recipientId];
-
-        await UserConversation.bulkCreate(
-          participants.map(p_id => ({
-            citizen_id: p_id,
-            conversation_id: conversation.conversation_id,
-          }))
-        );
-
-        participants.forEach((u) => {
-          io.to(`user:${u}`).emit("conversationStarted", conversation);
+      try {
+        // 1. Look for an existing conversation involving exactly this citizen and this admin
+        const existingConvo = await Conversation.findOne({
+          include: [
+            {
+              model: UserConversation,
+              where: { citizen_id: citizenId },
+              required: true
+            },
+            {
+              model: AdminConversation,
+              where: { admin_id: adminId },
+              required: true
+            }
+          ]
         });
+
+        let conversation;
+
+        if (existingConvo) {
+          // 2. Double check to ensure no other participants exist (Strictly 1:1)
+          const userCount = await UserConversation.count({ where: { conversation_id: existingConvo.conversation_id } });
+          const adminCount = await AdminConversation.count({ where: { conversation_id: existingConvo.conversation_id } });
+
+          if (userCount === 1 && adminCount === 1) {
+            conversation = existingConvo;
+          }
+        }
+
+        if (conversation) {
+          socket.emit("conversationStarted", conversation);
+        } else {
+          // 3. If no 1:1 conversation exists, create a new one
+          const newConvo = await Conversation.create();
+
+          // Create entry in the Citizen junction table
+          await UserConversation.create({
+            citizen_id: citizenId,
+            conversation_id: newConvo.conversation_id,
+          });
+
+          // Create entry in the Admin junction table
+          await AdminConversation.create({
+            admin_id: adminId,
+            conversation_id: newConvo.conversation_id,
+          });
+
+          // Notify both parties
+          io.to(`user:${citizenId}`).emit("conversationStarted", newConvo);
+          io.to(`user:${adminId}`).emit("conversationStarted", newConvo);
+        }
+      } catch (error) {
+        console.error("Error fetching/creating conversation:", error);
+        socket.emit("error", { message: "Internal server error" });
       }
     });
 

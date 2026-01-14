@@ -14,6 +14,7 @@ const internalAuth = (req, res, next) => {
     req.user = { id: internalUserId };
     return next();
   }
+     
   return authenticateToken(req, res, next);
 };
 

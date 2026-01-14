@@ -1,8 +1,10 @@
 import cron from "node-cron";
 import { UpdatePriorityScores } from "../utils/PriorityMapper.js";
 
+console.log("priority mapper job initialized")
+
 cron.schedule("0 7 * * *", async () => {
-  console.log("⚡ Cron job started: Updating priority scores...");
+  console.log("Cron job started: Updating priority scores...");
 
   try {
     await UpdatePriorityScores();
@@ -11,3 +13,5 @@ cron.schedule("0 7 * * *", async () => {
     console.error("Error updating priority scores:", error);
   }
 });
+
+

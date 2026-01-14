@@ -7,7 +7,7 @@ export async function UpdatePriorityScores() {
 
   const queries = await Query.findAll({
     where: {
-      priority_status: { [Op.not]: "high" },
+      priority_status: { [Op.notIn]: ["high","urgent"]},
       set_priotity_score: { [Op.lt]: 100 },
       query_status: { [Op.ne]: "completed" },
     },

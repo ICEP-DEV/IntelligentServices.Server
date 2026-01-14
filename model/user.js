@@ -29,7 +29,10 @@ const Citizen = sequelize.define('citizen', {
         type: DataTypes.STRING,
         allowNull:true,
     },
-
+    region: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
     firstname: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -42,6 +45,7 @@ const Citizen = sequelize.define('citizen', {
         type: DataTypes.STRING,
         allowNull: true,
     },
+    
     profilePic: {
     type: DataTypes.TEXT('long'), 
     allowNull: true,
@@ -57,6 +61,10 @@ const Citizen = sequelize.define('citizen', {
     is_Verified: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
+    },
+    profileVerified: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
     }
 }, {
     timestamps: true,
@@ -111,6 +119,10 @@ const Admin = sequelize.define('Admin', {
     suspendedUntil: {
         type: DataTypes.DATE,
         allowNull: true,
+    },
+    profileVerified: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
     }
 },{
     timestamps: true,
@@ -166,6 +178,10 @@ const MunicipalPersonnel = sequelize.define('municipalPersonnel', {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
     },
+    profileVerified: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+    }
 }, {
     timestamps: true,
     paranoid: true,

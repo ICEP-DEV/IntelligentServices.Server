@@ -7,6 +7,7 @@ import Feedback from "./feedback.js";
 import { Conversation, Message } from "./message.js";
 import AdminConversation from "./AdminConversation.js";
 import CitizenConversation from "./CitizenConversation.js";
+import Otp from "./otp.js";
 
 Notification.belongsToMany(Citizen, 
     {through: 'CitizenNotifications',
@@ -57,6 +58,9 @@ UnResolvedQueries.belongsTo(Admin, { foreignKey: 'admin_id' });
 
 MunicipalPersonnel.hasMany(UnResolvedQueries, { foreignKey: 'municipality_id' });
 UnResolvedQueries.belongsTo(MunicipalPersonnel, { foreignKey: 'municipality_id' });
+
+Citizen.hasMany(Otp, {foreignKey: 'citizen_id'});
+Otp.belongsTo(Citizen, {foreignKey: 'citizen_id'});
 
 Citizen.hasMany(Feedback, { foreignKey: "citizen_id" });
 Feedback.belongsTo(Citizen, { foreignKey: "citizen_id" });
@@ -111,5 +115,6 @@ Message.belongsTo(Admin, {
   targetKey: "admin_id",
   constraints: false,
 });
+
 
 export { Citizen, Notification};

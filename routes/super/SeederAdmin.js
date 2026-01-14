@@ -106,4 +106,78 @@ router.get(
   }
 );
 
+router.post(
+  "/bulk-add-users",
+  authenticateToken,
+  authorizeRole(["superadmin"]),
+  async (req, res) => {
+    const { users } = req.body; 
+
+    if (!Array.isArray(users) || users.length === 0) {
+      return res.status(400).json({ error: "Invalid or empty user list" });
+    }
+
+    const CHUNK_SIZE = 50;
+    const results = { success: 0, errors: [] };
+
+    try {
+      for (let i = 0; i < users.length; i += CHUNK_SIZE) {
+        const chunk = users.slice(i, i + CHUNK_SIZE);
+        const processedChunk = await Promise.all(
+          chunk.map(async (u) => {
+            const genPassword = crypto.randomBytes(8).toString("hex");
+            const hashPassword = await bcrypt.hash(genPassword, 10);
+            
+            return {
+              ...u,
+              genPassword,
+              hashPassword,
+              firstname: u.name.split(" ")[0],
+              lastname: u.name.split(" ")[1] || "",
+            };
+          })
+        );
+        const admins = processedChunk.filter(u => u.role === "admin");
+        const municipals = processedChunk.filter(u => u.role === "municipal");
+
+        if (admins.length > 0) {
+          await Admin.bulkCreate(admins.map(a => ({
+            firstname: a.firstname,
+            lastname: a.lastname,
+            email: a.email,
+            password: a.hashPassword,
+            isSuperAdmin: false,
+            region: a.region
+          })));
+        }
+
+        if (municipals.length > 0) {
+          await MunicipalPersonnel.bulkCreate(municipals.map(m => ({
+            firstname: m.firstname,
+            lastname: m.lastname,
+            email: m.email,
+            password: m.hashPassword,
+            region: m.region,
+            isSupervisor: m.supervisor || false
+          })));
+        }
+        for (const user of processedChunk) {
+          const message = `Your password is ${user.genPassword}`;
+          await sendEmail(`${user.role} Confirmation`, user.email, user.firstname, message);
+          results.success++;
+        }
+      }
+
+      res.status(201).json({ 
+        message: "Bulk creation complete", 
+        processed: results.success 
+      });
+
+    } catch (err) {
+      console.error("Bulk Create Error:", err);
+      res.status(500).json({ error: "Server error during bulk creation" });
+    }
+  }
+);
+
 export default router;

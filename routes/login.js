@@ -2,8 +2,6 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { Citizen, Admin, MunicipalPersonnel } from '../model/user.js';
-import { isEmailTaken } from '../utils/FindEmail.js';
-import checkSuspended from '../middlewares/checkSuspended.js';
 import checkCitizenVerified from '../middlewares/CheckVerificationStatus.js';
 
 const router = express.Router();
@@ -60,12 +58,6 @@ router.post('/login',checkCitizenVerified, async (req, res) => {
     res.status(200).json({
       message: "Login successful",
       token,
-      user: {
-        id: userId,
-        email: user.email,
-        role,
-        region: user.region || "N/A"
-      }
     });
 
   } catch (error) {
