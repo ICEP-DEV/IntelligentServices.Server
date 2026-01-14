@@ -1,4 +1,4 @@
-import { autoApproveCitizens } from "../controllers/AutoApprove.js";
+import { autoApproveCitizens } from "../controllers/autoApprove.js";
 import cron from "node-cron";
 
 console.log("update approve status job started");
