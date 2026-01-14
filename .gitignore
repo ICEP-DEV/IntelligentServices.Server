@@ -25,3 +25,4 @@ routes/lodgeComplaint.js
 # Ignore local trunk folder
 .trunk/
 
+"config/config.json" 
