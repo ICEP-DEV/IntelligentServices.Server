@@ -64,7 +64,7 @@ export const verifyOTPAndLogin = async (req, res) => {
     citizen.is_Verified = true;
     await citizen.save();
     const token = jwt.sign(
-        { id: citizen.citizen_id, email: citizen.email, role: 'citizen' },
+        { id: citizen.citizen_id, email: citizen.email, role: 'citizen', is_Verified: citizen.is_Verified },
         process.env.JWT_SECRET,
         { expiresIn: '1h' }
     );
@@ -72,7 +72,6 @@ export const verifyOTPAndLogin = async (req, res) => {
     return res.json({
         message: 'OTP verified successfully. Account is now active.',
         token,
-        user: { id: citizen.citizen_id, email: citizen.email }
     });
 }
 
