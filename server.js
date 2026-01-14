@@ -123,6 +123,12 @@ app.get('/', (req, res) => res.send('API is running'));
 sequelize.authenticate()
   .then(async () => {
     console.log('Database connected');
+
+    /* Removed for production */
+    // await sequelize.sync({ alter: true });
+    // console.log('Database synced');
+
+
     await ensureBotUserExists();
     await seedSuperAdmin();
 
