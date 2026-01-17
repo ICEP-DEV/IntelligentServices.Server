@@ -11,7 +11,8 @@ async function sendEmail(title="Password reset",email,username,message, resetMsg
     },
     tls: {
       rejectUnauthorized: false
-    }
+    },
+    family: 4
   });
 
   const mailOptions = {
@@ -26,10 +27,11 @@ async function sendEmail(title="Password reset",email,username,message, resetMsg
   try {
   await transporter.sendMail(mailOptions);
   console.log(`Password reset email sent to ${email}, reset: ${resetMsg}`);
+  console.log("Host: ", process.env.EMAIL_USER);
   return true;
   } catch(err) {
     console.error("Email Sending Errror: ", err);
-    throw new error("Email Service Timeout or Auth failure");
+    throw new Error("Email Service Timeout or Auth failure");
   }
 }
 
