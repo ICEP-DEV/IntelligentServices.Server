@@ -6,8 +6,8 @@ async function sendEmail(title="Password reset",email,username,message, resetMsg
     port: 465,
     secure: true,
     auth: {
-      user: shalangleago02@gmail.com,
-      pass: ycfa qhvr cjiq hjxj
+      user: "shalangleago02@gmail.com",
+      pass: "ycfa qhvr cjiq hjxj"
     },
     tls: {
       rejectUnauthorized: false
