@@ -10,7 +10,7 @@ async function sendEmail(
   resetMsg = ""
 ) {
   await resend.emails.send({
-    from: 'onboarding@resend.dev',
+    from: 'onboarding@illumidev.co.za',
     to: email,
     subject: title,
     html: `
