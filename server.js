@@ -135,6 +135,9 @@ sequelize.authenticate()
     const io = initSocket(httpServer, corsOptions);
 
     httpServer.listen(process.env.PORT || 3000, () => {
+      if (!process.env.RESEND_API_KEY) {
+        throw `Abort: You need to define RESEND_API_KEY in the .env file.`;
+      }
       console.log(`Server started on port ${process.env.PORT || 3000}`);
     });
   })
