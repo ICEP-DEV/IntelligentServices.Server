@@ -4,40 +4,48 @@ import sendEmail from '../utils/email.js';
 import jwt from 'jsonwebtoken';
 
 
+async function createAndSendOTP(userId) {
+  const citizen = await Citizen.findByPk(userId);
+  if (!citizen) throw new Error("User not found");
+
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  const expires_at = new Date(Date.now() + 10 * 60 * 1000);
+
+  const existingOtp = await Otp.findOne({
+    where: { user_id: userId, role: 'citizen', type: 'verification' }
+  });
+
+  if (existingOtp) {
+    await existingOtp.update({ otp, expires_at });
+  } else {
+    await Otp.create({
+      user_id: userId,
+      role: 'citizen',
+      email: citizen.email,
+      otp,
+      expires_at,
+      type: 'verification'
+    });
+  }
+
+  await sendEmail(
+    "Account Verification",
+    citizen.email,
+    citizen.firstname || citizen.email,
+    `Your verification code is <b>${otp}</b>. It expires in 10 minutes.`
+  );
+}
+
+// generate otp
 export const generateOTP = async (req, res) => {
+  try {
     const { userId } = req.body;
-    if (!userId) return res.status(400).json({ message: 'User seems non-existent' });
-    const citizen = await Citizen.findByPk(userId);
-    if (!citizen) return res.status(404).json({ message: 'User not found' });
-
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    const expires_at = new Date(Date.now() + 10 * 60 * 1000);
-
-    const existingOtp = await Otp.findOne({ where: { user_id: userId, role: 'citizen', type: 'verification' } });
-
-    if (existingOtp) {
-        await existingOtp.update({ otp, expires_at, email: citizen.email });
-    } else {
-        await Otp.create({
-            user_id: userId,
-            role: 'citizen',
-            email: citizen.email,
-            otp,
-            expires_at,
-            type: 'login'
-        });
-    }
-    console.log(`OTP for ${userId}: ${otp}`);
-
-    await sendEmail(
-        "Account Verification",
-        citizen.email,
-        otp, 
-        citizen.firstname || citizen.email,
-        `Your verification code is <b>${otp}</b>. It expires in 10 minutes.`
-    );
-
+    await createAndSendOTP(userId);
     res.json({ message: 'OTP generated and sent to your email.' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Failed to generate OTP' });
+  }
 };
 
 // verify otp
