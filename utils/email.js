@@ -10,7 +10,7 @@ async function sendEmail(
   resetMsg = ""
 ) {
   await resend.emails.send({
-    from: "MunicipalHub <onboarding@resend.dev>",
+    from: 'onboarding@resend.dev',
     to: email,
     subject: title,
     html: `
