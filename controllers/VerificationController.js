@@ -53,7 +53,7 @@ export const verifyOTPAndLogin = async (req, res) => {
     const { userId, otp } = req.body;
     if (!userId || !otp) return res.status(400).json({ message: 'OTP required!' });
 
-    const record = await Otp.findOne({ where: { user_id: userId, role: 'citizen', type: 'login' } });
+    const record = await Otp.findOne({ where: { user_id: userId, role: 'citizen', type: 'verification' } });
     if (!record) return res.status(400).json({ message: 'No OTP found for this user.' });
 
     if (record.expires_at < new Date()) {
