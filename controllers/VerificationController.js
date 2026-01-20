@@ -4,7 +4,7 @@ import sendEmail from '../utils/email.js';
 import jwt from 'jsonwebtoken';
 
 
-async function createAndSendOTP(userId) {
+export async function createAndSendOTP(userId) {
   const citizen = await Citizen.findByPk(userId);
   if (!citizen) throw new Error("User not found");
 
