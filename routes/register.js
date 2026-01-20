@@ -2,7 +2,7 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import { Citizen } from '../model/user.js';
 import { isEmailTaken } from '../utils/FindEmail.js';
-import { generateOTP } from '../controllers/VerificationController.js'; // adjust path
+import { createAndSendOTP } from '../controllers/VerificationController.js'; // adjust path
 
 const router = express.Router();
 
@@ -42,7 +42,7 @@ router.post('/register/citizen', async (req, res) => {
     });
 
     // Generate OTP for the new user
-    await generateOTP({ body: { userId: newUser.citizen_id } }, { json: () => {} });
+    await createAndSendOTP(newUser.citizen_id);
 
     res.status(201).json({ 
         message: 'Citizen registered successfully. OTP sent to your email for verification.',
