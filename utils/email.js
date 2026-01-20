@@ -2,16 +2,12 @@ import nodemailer from 'nodemailer';
 
 async function sendEmail(title="Password reset",email,username,message, resetMsg="") {
   const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com', 
-    port: 465,
-    secure: true,
+    service: "gmail",
     auth: {
-      user: "shalangleago02@gmail.com",
-      pass: "ycfa qhvr cjiq hjxj"
+      user: process.env.EMAIL_USER,
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     },
-    tls: {
-      rejectUnauthorized: false
-    }
   });
 
   const mailOptions = {
