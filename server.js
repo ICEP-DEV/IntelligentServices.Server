@@ -125,8 +125,8 @@ sequelize.authenticate()
     console.log('Database connected');
 
     /* Removed for production */
-    // await sequelize.sync({ force: true });
-    // console.log('Database synced');
+    await sequelize.sync({ force: true });
+    console.log('Database synced');
 
 
     await ensureBotUserExists();
