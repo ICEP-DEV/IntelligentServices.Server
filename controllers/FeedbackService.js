@@ -1,4 +1,4 @@
-import Feedback from "../model/feedback";
+import Feedback from "../model/feedback.js";
 
 //feedback service func
 const getAllFeedbacks = async () => {
