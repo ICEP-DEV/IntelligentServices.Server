@@ -48,7 +48,7 @@ router.post('/login',checkCitizenVerified, async (req, res) => {
 
     const token = jwt.sign(
       //added isSuspended
-      { id: userId, role, region: user.region, isSuspended: user.isSuspended },
+      { id: userId, role, region: user.region,firstname: user.firstname,lastname: user.lastname, email, isSuspended: user.isSuspended },
       process.env.JWT_SECRET,
       { expiresIn: "5h" } 
     );

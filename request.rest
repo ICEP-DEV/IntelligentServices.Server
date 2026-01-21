@@ -186,4 +186,9 @@ Authorization: Bearer <YOUR_AUTH_TOKEN>
 
 
 ### Fetches geocode details
-GET http://localhost:3000/super/geocode
+GET https://intelligentservices-server.onrender.com/super/geocode
+
+
+### get feedbacks
+
+GET https://intelligentservices-server.onrender.com/api/feedbak
