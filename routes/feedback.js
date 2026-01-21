@@ -50,6 +50,6 @@ router.post("/citizen",authenticateToken,checkSuspended, async (req, res) => {
   }
 });
 
-router.get("/feedback/admin", getFeedback);
+router.get("/admin", getFeedback);
 
 export default router;
