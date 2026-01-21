@@ -1,7 +1,7 @@
 import Feedback from "../model/feedback";
 
 //feedback service func
-export const getAllFeedbacks = async () => {
+const getAllFeedbacks = async () => {
   try {
     const feedbacks = await Feedback.findAll({
       order: [["createdAt", "DESC"]],
@@ -12,3 +12,5 @@ export const getAllFeedbacks = async () => {
     throw error;
   }
 };
+
+export default getAllFeedbacks;
