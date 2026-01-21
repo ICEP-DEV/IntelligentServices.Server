@@ -1,4 +1,4 @@
-import { getAllFeedbacks } from "./FeedbackService.js";
+import getAllFeedbacks from "./FeedbackService.js";
 
 
 export const getFeedback = async (req, res) => {
