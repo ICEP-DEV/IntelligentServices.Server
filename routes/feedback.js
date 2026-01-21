@@ -1,9 +1,9 @@
 import express from "express";
 import { getSocket } from "../config/socket.js";
-import Feedback from "../model/feedback.js";
 import { Citizen } from "../model/user.js";
 import authenticateToken from "../middlewares/authenticateToken.js";
 import checkSuspended from "../middlewares/checkSuspended.js";
+import { getFeedback } from "../controllers/FeedbackController.js";
 
 const router = express.Router();
 
@@ -31,11 +31,13 @@ router.post("/citizen",authenticateToken,checkSuspended, async (req, res) => {
     const feedback = await citizen.createFeedback({ message, rating });
 
     const io = getSocket();
-    io.to("admin-role").emit("newFeedback",  {
+    io.to("feedback-hub").emit("newFeedbackNotification", {
       citizen_id,
       name: `${citizen.firstname} ${citizen.lastname}`,
       message,
       rating,
+      feedback_id: feedback.feedback_id,
+      createdAt: feedback.createdAt,
     });
 
     res.status(201).json({
@@ -48,24 +50,6 @@ router.post("/citizen",authenticateToken,checkSuspended, async (req, res) => {
   }
 });
 
-router.get("/admin", async (req, res) => {
-  try {
-    const citizenFeedback = await Feedback.findAll({
-      attributes: ["message", "rating","createdAt"],
-      include: [
-        {
-          model: Citizen,
-          attributes: ["firstname", "lastname"],
-        },
-      ],
-      order: [["createdAt", "DESC"]],
-    });
-
-    res.status(200).json({ data: citizenFeedback });
-  } catch (err) {
-    console.error("Error fetching feedback:", err);
-    res.status(500).json({ error: "Failed to fetch feedback" });
-  }
-});
+router.get("/feedback/admin", getFeedback);
 
 export default router;

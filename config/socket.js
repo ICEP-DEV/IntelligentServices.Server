@@ -5,6 +5,8 @@ import { Message, Conversation } from "../model/message.js";
 import UserConversation from "../model/CitizenConversation.js";
 import AdminConversation from "../model/AdminConversation.js";
 import { getGeminiResponse, BOT_USER_ID } from "./Gemini.js";
+import Feedback from "../model/feedback.js";
+
 
 let io;
 
@@ -33,6 +35,26 @@ export const initSocket = (server, corsOptions) => {
         socket.emit("loadFeedbackHub", feedbacks);
       }
     });
+    // ============= admin feedbackz ==================
+    socket.on("submitFeedback", async ({ message, rating }) => {
+      if (!socket.userId || !message || !rating) return;
+
+      try {
+        const feedback = await Feedback.create({ message, rating });
+        io.to("feedback-hub").emit("newFeedbackNotification", {
+          feedback_id: feedback.feedback_id,
+          message: feedback.message,
+          rating: feedback.rating,
+          createdAt: feedback.createdAt,
+          citizenId: socket.userId,
+        });
+        socket.emit("feedbackSubmitted", { success: true });
+      } catch (error) {
+        console.error("Error submitting feedback:", error);
+        socket.emit("feedbackSubmitted", { success: false, error: error.message });
+      }
+    });
+
     // ================= Conversations =================
     socket.on("startConversation", async ({ users }) => {
       if (!socket.userId) return socket.emit("authError", { message: "Not authorized." });
