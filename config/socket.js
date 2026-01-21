@@ -5,8 +5,6 @@ import { Message, Conversation } from "../model/message.js";
 import UserConversation from "../model/CitizenConversation.js";
 import AdminConversation from "../model/AdminConversation.js";
 import { getGeminiResponse, BOT_USER_ID } from "./Gemini.js";
-import Feedback from "../model/feedback.js";
-
 
 let io;
 
