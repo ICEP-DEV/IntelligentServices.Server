@@ -1,4 +1,4 @@
-import redisClient, {BLOCK_DURATION,BASE_TTL,MAX_ATTEMPTS} from "../config/redis";
+import redisClient, {BLOCK_DURATION,BASE_TTL,MAX_ATTEMPTS} from "../config/redis.js";
 
 export const checkLoginBlock = async (req, res, next) => {
     const key = `login_attempts:${req.ip}`;
