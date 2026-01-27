@@ -54,6 +54,9 @@ dotenv.config();
 
 
 const app = express();
+
+app.set('trust proxy', true);//trust render loadbalancer
+
 const httpServer = createServer(app);
 
 const __filename = fileURLToPath(import.meta.url);
