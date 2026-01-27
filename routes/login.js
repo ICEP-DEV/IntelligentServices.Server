@@ -4,10 +4,12 @@ import jwt from 'jsonwebtoken';
 import { Citizen, Admin, MunicipalPersonnel } from '../model/user.js';
 import checkCitizenVerified from '../middlewares/CheckVerificationStatus.js';
 
+import { checkLoginBlock,resetLoginAttempts,trackFailedLogin } from '../middlewares/loginLimiter.js';
+
 const router = express.Router();
 
 // LOGIN
-router.post('/login',checkCitizenVerified, async (req, res) => {
+router.post('/login',checkCitizenVerified,checkLoginBlock, async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -32,11 +34,29 @@ router.post('/login',checkCitizenVerified, async (req, res) => {
     }
 
     if (!user) {
-      return res.status(401).json({ error: "Invalid Credentials" });
+
+      const status = await trackFailedLogin(req.ip);
+      if(status.blocked){
+        return res.status(429).json({ error: "Too many attempts. Blocked for 5 minutes." });
+      }
+
+      return res.status(401).json({ 
+        error: "Invalid Credentials",
+        remaining: status.remaining, //remaining attempts
+      });
     }
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-        return res.status(401).json({ error: "Invalid email or password" });
+        const status = await trackFailedLogin(req.ip);
+
+        if(status.blocked){
+          return res.status(429).json({ error: "Too many attempts. Blocked for 5 minutes." });
+        
+        }  
+        return res.status(401).json({ 
+          error: "Invalid email or password",
+          remaining: status.remaining, //remaining attempts
+         });
         }
     
     if (user.status && user.status.toLowerCase() === "suspended") {
@@ -54,7 +74,8 @@ router.post('/login',checkCitizenVerified, async (req, res) => {
     );
     if(!token) return res.status(403).json({ error: "Token Invalid or Token Expired"})
 
-    
+    //if successful, reset attempts
+    await resetLoginAttempts(req.ip);
 
     res.status(200).json({
       message: "Login successful",
